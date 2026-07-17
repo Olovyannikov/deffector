@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["chrome", "node"]
+  },
+  "include": [
+    "packages/*/src",
+    "packages/*/test",
+    "e2e",
+    "demo/shared/src",
+    "demo/react-vite/src",
+    "demo/global-mode/src",
+    "demo/no-plugin/src",
+    "demo/lab/src",
+    "demo/vue-vite/src",
+    "demo/*/vite.config.ts",
+    "*.config.ts"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    "packages/agent/src/adapters/solid.tsx",
+    "packages/agent/src/adapters/solid-noop.tsx",
+    "demo/solid-vite/vite.config.ts"
+  ]
+}

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+out/
+coverage/
+test-results/
+playwright-report/
+*.log
+.DS_Store
+.vite/
+dist-raw/
+dist-firefox/
+
+# documentation site (VitePress)
+website/.vitepress/cache
+website/.vitepress/dist
+*.tsbuildinfo

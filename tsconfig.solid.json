@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": []
+  },
+  "include": [
+    "packages/agent/src/adapters/solid.tsx",
+    "packages/agent/src/adapters/solid-noop.tsx",
+    "demo/solid-vite/src",
+    "demo/solid-vite/vite.config.ts"
+  ]
+}

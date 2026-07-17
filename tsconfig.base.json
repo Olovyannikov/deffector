@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": false,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@deffector/protocol": ["packages/protocol/src/index.ts"],
+      "@deffector/agent": ["packages/agent/src/index.ts"],
+      "@deffector/agent/react": ["packages/agent/src/adapters/react.tsx"],
+      "@deffector/agent/vue": ["packages/agent/src/adapters/vue.ts"],
+      "@deffector/agent/solid": ["packages/agent/src/adapters/solid.tsx"],
+      "@deffector/agent/node": ["packages/agent/src/node.ts"],
+      "@deffector/panel": ["packages/panel/src/index.tsx"]
+    }
+  }
+}
