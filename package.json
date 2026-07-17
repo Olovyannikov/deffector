@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "description": "DevTools for effector: transactions, time travel, state injection and trace record/replay",
   "license": "MIT",
-  "workspaces": [],
+  "workspaces": [
+    "packages/protocol"
+  ],
   "scripts": {
     "build": "npm run build -w @deffector/agent && npm run build -w @deffector-demo/shared && npm run build -w @deffector/extension && npm run build:firefox -w @deffector/extension && npm run build -w @deffector/standalone",
     "build:demo-shared": "npm run build -w @deffector-demo/shared",
