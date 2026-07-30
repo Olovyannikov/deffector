@@ -1,0 +1,88 @@
+{
+  "name": "@deffector/agent",
+  "version": "0.1.0",
+  "description": "Page-side agent of deffector: observes the effector graph, records transactions, applies time travel and replays traces",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "production": "./src/noop.ts",
+      "react-native": "./dist/index.js",
+      "node": "./dist/index.js",
+      "default": "./src/index.ts"
+    },
+    "./react": {
+      "production": "./src/adapters/react-noop.tsx",
+      "node": "./dist/react.js",
+      "default": "./src/adapters/react.tsx"
+    },
+    "./vue": {
+      "production": "./src/adapters/vue-noop.ts",
+      "node": "./dist/vue.js",
+      "default": "./src/adapters/vue.ts"
+    },
+    "./solid": {
+      "production": "./src/adapters/solid-noop.tsx",
+      "default": "./src/adapters/solid.tsx"
+    },
+    "./node": {
+      "production": "./src/node-noop.ts",
+      "react-native": "./dist/node.js",
+      "node": "./dist/node.js",
+      "default": "./src/node.ts"
+    }
+  },
+  "scripts": {
+    "build": "node ./build.mjs",
+    "prepare": "node ./build.mjs"
+  },
+  "dependencies": {
+    "@deffector/protocol": "0.1.0"
+  },
+  "peerDependencies": {
+    "effector": ">=22.6.0",
+    "effector-react": ">=23",
+    "effector-solid": ">=0.23",
+    "effector-vue": ">=23",
+    "react": ">=18",
+    "solid-js": ">=1.8",
+    "vue": ">=3.3"
+  },
+  "peerDependenciesMeta": {
+    "effector-react": {
+      "optional": true
+    },
+    "effector-solid": {
+      "optional": true
+    },
+    "effector-vue": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "effector": "23.4.4",
+    "effector-react": "^23.3.0",
+    "effector-solid": "^0.23.0",
+    "effector-vue": "^23.2.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "solid-js": "^1.9.17",
+    "vue": "^3.5.43"
+  },
+  "files": [
+    "src",
+    "dist"
+  ]
+}
