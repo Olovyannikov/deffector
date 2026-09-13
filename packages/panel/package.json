@@ -1,0 +1,22 @@
+{
+  "name": "@deffector/panel",
+  "version": "0.1.0",
+  "description": "deffector UI: transaction log, stores, effects, graph, traces and health",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./panel.css": "./src/panel.css"
+  },
+  "dependencies": {
+    "@deffector/protocol": "0.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0"
+  }
+}
