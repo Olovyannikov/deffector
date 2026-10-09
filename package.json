@@ -7,7 +7,8 @@
   "workspaces": [
     "packages/protocol",
     "packages/agent",
-    "packages/panel"
+    "packages/panel",
+    "packages/extension"
   ],
   "scripts": {
     "build": "npm run build -w @deffector/agent && npm run build -w @deffector-demo/shared && npm run build -w @deffector/extension && npm run build:firefox -w @deffector/extension && npm run build -w @deffector/standalone",

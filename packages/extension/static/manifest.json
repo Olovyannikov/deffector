@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "deffector — effector DevTools",
+  "short_name": "deffector",
+  "version": "0.1.0",
+  "description": "Transactions, time travel, state injection and trace record/replay for effector apps.",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "action": {
+    "default_icon": { "16": "icons/16-off.png", "32": "icons/32-off.png" },
+    "default_title": "deffector: no effector agent on this page",
+    "default_popup": "popup.html"
+  },
+  "devtools_page": "devtools.html",
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ]
+}
