@@ -1,0 +1,22 @@
+{
+  "name": "@deffector-demo/solid-vite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --port 5173"
+  },
+  "dependencies": {
+    "@deffector-demo/shared": "0.0.0",
+    "@deffector/agent": "0.1.0",
+    "effector": "23.4.4",
+    "effector-solid": "^0.23.0",
+    "solid-js": "^1.9.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0",
+    "vite-plugin-solid": "^2.11.0"
+  }
+}

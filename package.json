@@ -11,7 +11,9 @@
     "packages/extension",
     "packages/standalone",
     "demo/shared",
-    "demo/react-vite"
+    "demo/react-vite",
+    "demo/vue-vite",
+    "demo/solid-vite"
   ],
   "scripts": {
     "build": "npm run build -w @deffector/agent && npm run build -w @deffector-demo/shared && npm run build -w @deffector/extension && npm run build:firefox -w @deffector/extension && npm run build -w @deffector/standalone",
