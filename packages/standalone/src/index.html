@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>deffector</title>
+    <link rel="stylesheet" href="panel.css" />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        background: #1f1f1f;
+        color: #e3e3e3;
+        font:
+          12px system-ui,
+          sans-serif;
+      }
+      [data-theme='light'] body {
+        background: #fff;
+        color: #1f1f1f;
+      }
+      .bar {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 8px;
+        border-bottom: 1px solid rgba(127, 127, 127, 0.3);
+      }
+      .bar b {
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .bar select {
+        height: 22px;
+        max-width: 60vw;
+        background: transparent;
+        color: inherit;
+        border: 1px solid rgba(127, 127, 127, 0.4);
+        border-radius: 4px;
+      }
+      .bar .n {
+        opacity: 0.6;
+        font:
+          11px ui-monospace,
+          monospace;
+      }
+      #root {
+        flex: 1;
+        min-height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <b>deffector</b
+      ><label
+        ><span id="target-label">Agent</span>
+        <select id="target">
+          <option value="auto">auto</option>
+        </select></label
+      ><span class="n">· <span id="count">0</span> connected</span>
+    </div>
+    <div id="root"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

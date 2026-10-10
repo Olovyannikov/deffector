@@ -1,0 +1,27 @@
+{
+  "name": "@deffector/standalone",
+  "version": "0.1.0",
+  "description": "deffector as a standalone app: for SSR servers, Node scripts, tests and React Native — anything that is not a browser tab",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "deffector": "./bin/deffector.mjs"
+  },
+  "files": [
+    "bin",
+    "server.mjs",
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ./build.mjs",
+    "start": "node ./bin/deffector.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@deffector/panel": "0.1.0",
+    "@deffector/protocol": "0.1.0",
+    "@types/ws": "^8.5.12"
+  }
+}
