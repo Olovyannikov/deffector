@@ -1,0 +1,32 @@
+{
+  "name": "@deffector-demo/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "One effector model shared by every demo. Built with the effector babel plugin, so sids are identical in all demos and a trace recorded in one replays in another.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./raw": {
+      "types": "./src/index.ts",
+      "default": "./dist-raw/index.js"
+    },
+    "./demo.css": "./demo.css"
+  },
+  "scripts": {
+    "build": "node ./build.mjs",
+    "prepare": "node ./build.mjs"
+  },
+  "peerDependencies": {
+    "effector": "^23"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-typescript": "^7.27.1",
+    "effector": "23.4.4"
+  }
+}

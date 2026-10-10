@@ -1,0 +1,142 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --card: #fff;
+  --line: #dadce0;
+  --tx: #1f1f1f;
+  --mut: #5f6368;
+  --acc: #0b57d0;
+  --err: #c5221f;
+  --ok: #137333;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #18191b;
+    --card: #232427;
+    --line: #3c4043;
+    --tx: #e3e3e3;
+    --mut: #9aa0a6;
+    --acc: #a8c7fa;
+    --err: #f28b82;
+    --ok: #81c995;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--tx);
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+}
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+h1 {
+  font-size: 20px;
+  margin: 0 0 16px;
+}
+h1 small {
+  font-weight: 400;
+  color: var(--mut);
+  font-size: 14px;
+}
+h2 {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.field span {
+  font-size: 12px;
+  color: var(--mut);
+}
+input[type='text'],
+input[type='password'],
+input:not([type]) {
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+input[aria-invalid='true'] {
+  border-color: var(--err);
+}
+.check {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 4px 0 12px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+button {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+button.pri {
+  background: var(--acc);
+  color: var(--card);
+  border-color: transparent;
+}
+.sugg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: -4px 0 10px;
+}
+.sugg button {
+  height: 24px;
+  font-size: 12px;
+}
+.muted {
+  color: var(--mut);
+  font-size: 12px;
+}
+.err {
+  color: var(--err);
+}
+.ok {
+  color: var(--ok);
+}
+.count {
+  font-size: 20px;
+  min-width: 36px;
+  text-align: center;
+}
