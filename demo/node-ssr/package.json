@@ -1,0 +1,16 @@
+{
+  "name": "@deffector-demo/node-ssr",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Plain Node SSR: a scope per request, inspected in the standalone deffector app",
+  "scripts": {
+    "dev": "node --watch server.mjs",
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@deffector-demo/shared": "0.0.0",
+    "@deffector/agent": "0.1.0",
+    "effector": "23.4.4"
+  }
+}
