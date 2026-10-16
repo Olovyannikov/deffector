@@ -18,7 +18,8 @@
     "demo/no-plugin",
     "demo/node-ssr",
     "demo/next-ssr",
-    "demo/lab"
+    "demo/lab",
+    "website"
   ],
   "scripts": {
     "build": "npm run build -w @deffector/agent && npm run build -w @deffector-demo/shared && npm run build -w @deffector/extension && npm run build:firefox -w @deffector/extension && npm run build -w @deffector/standalone",

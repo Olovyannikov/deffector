@@ -1,0 +1,75 @@
+# Участие в разработке
+
+deffector — монорепозиторий на npm workspaces. Всё запускается из корня репозитория.
+
+```sh
+git clone https://github.com/mxmvshnvsk/deffector.git
+cd deffector
+npm install
+npm run build
+```
+
+## Устройство репозитория
+
+| Путь                  | Что там                                                                                                                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/protocol`   | типы сообщений, кодирование значений с тегом `$t`, формат трейса и проверка совместимости                                                                                                                                                                     |
+| `packages/agent`      | работает в странице: подключается к `setInspector` / `setGraphInspector`, собирает шаги в транзакции, хранит снимки, перемещение во времени, правки, воспроизведение, подмену эффектов, проверки Health; адаптеры для React, Vue, Solid; точка входа для Node |
+| `packages/panel`      | интерфейс (React), общий для расширения и отдельного приложения; в `src/i18n.ts` — все тексты на английском и русском                                                                                                                                         |
+| `packages/extension`  | расширение MV3 для Chrome/Edge (`dist/`) и Firefox (`dist-firefox/`): content script ⇄ background ⇄ панель DevTools                                                                                                                                           |
+| `packages/standalone` | `npx @deffector/standalone`: отдаёт панель и пересылает сообщения агентов по WebSocket                                                                                                                                                                        |
+| `demo/*`              | одна модель effector (`demo/shared`) в React, Vue, Solid, Next.js, Node SSR, глобальном режиме и без плагина; `demo/lab` — большие графы и пограничные случаи                                                                                                 |
+| `e2e`                 | тесты Playwright, которые загружают расширение и прогоняют каждое демо                                                                                                                                                                                        |
+| `assets/brand`        | логотип, иконки и превью для соцсетей                                                                                                                                                                                                                         |
+| `website`             | эта документация (VitePress)                                                                                                                                                                                                                                  |
+
+## Скрипты
+
+| Команда                                 | Что делает                                                                                         |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `npm run build`                         | агент, демо-модель, расширение (Chrome и Firefox), standalone                                      |
+| `npm run watch -w @deffector/extension` | пересобирает расширение при изменениях                                                             |
+| `npm test`                              | модульные тесты (vitest), `packages/*/test`                                                        |
+| `npx playwright install chromium`       | один раз, перед первым запуском e2e                                                                |
+| `npm run e2e`                           | Playwright: запускает демо, загружает расширение и прогоняет каждое демо (сначала `npm run build`) |
+| `npm run lint`                          | ESLint (правила Airbnb для TypeScript, React, Vue) и `prettier --check`                            |
+| `npm run lint:fix`                      | ESLint с `--fix`, затем `prettier --write`                                                         |
+| `npm run format`                        | `prettier --write .`                                                                               |
+| `npm run typecheck`                     | `tsc --noEmit` для основного проекта и проекта Solid                                               |
+| `npm run dev:react` … `npm run dev:lab` | [демо](/ru/reference/demos)                                                                        |
+| `npm run standalone`                    | отдельное приложение на http://localhost:8686                                                      |
+| `npm run docs:dev`                      | этот сайт с горячей перезагрузкой                                                                  |
+| `npm run docs:build`                    | собирает этот сайт в `website/.vitepress/dist`                                                     |
+
+Два необязательных прогона Playwright не проверяют поведение, а производят материалы:
+
+```sh
+PERF=perf.json npx playwright test e2e/perf.spec.ts     # замеры накладных расходов, см. «Производительность»
+SHOTS=shots npx playwright test e2e/screens.spec.ts     # скриншоты панели в обеих темах
+```
+
+А отдельная конфигурация vitest проверяет агента на сборке effector с
+[изменениями для upstream](/ru/reference/upstream):
+
+```sh
+EFFECTOR_DIST=/path/to/effector/npm/effector npx vitest run -c vitest.upstream.config.ts
+```
+
+## Работа над панелью
+
+Панель — обычный React с небольшим собственным стором (`packages/panel/src/store.ts`). Все видимые
+пользователю строки лежат в `packages/panel/src/i18n.ts` (а собственные тексты агента — пункты Health,
+пометки шагов — в `packages/agent/src/i18n.ts`); добавляйте оба языка. Расширение и отдельное
+приложение монтируют одну и ту же панель, поэтому проверяйте обе: `npm run build`, перезагрузка
+расширения и `npm run standalone`.
+
+## Работа над документацией
+
+```sh
+npm run docs:dev        # адрес будет в выводе, например http://localhost:5173/deffector/
+```
+
+Страницы — Markdown в `website/`: английские в корне, русские в `website/ru/` с теми же именами файлов.
+Держите обе версии в согласии. Скриншоты лежат в `website/public/screens/` (пары `dark-*` и `light-*`
+переключаются вместе с темой сайта). Сайт публикуется в GitHub Pages workflow `.github/workflows/docs.yml`
+(Settings → Pages → Source: GitHub Actions; для своего домена задайте переменную `DOCS_BASE` = `/`).
