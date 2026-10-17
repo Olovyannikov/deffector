@@ -1,11 +1,12 @@
 import { createRoot, type Root } from 'react-dom/client';
 import type { PanelTransport } from '@deffector/protocol';
-import { PanelStore } from './store';
+import { PanelStore, type SiteAccess } from './store';
 import { StoreContext } from './ui/common';
 import { App } from './ui/app';
 import type { Locale } from './i18n';
 
 export { PanelStore } from './store';
+export type { SiteAccess, SiteAccessStatus } from './store';
 export type { Locale } from './i18n';
 
 export interface MountOptions {
@@ -13,6 +14,8 @@ export interface MountOptions {
   theme?: 'dark' | 'light';
   locale?: Locale;
   density?: 'compact' | 'comfortable';
+  /** the extension's per-site access: the waiting screen offers to allow the inspected site */
+  siteAccess?: SiteAccess;
 }
 
 export interface MountedPanel {
@@ -24,6 +27,7 @@ export interface MountedPanel {
 /** Renders the deffector UI into `container`. Used by the extension panel, the standalone page and tests. */
 export function mountPanel(container: HTMLElement, options: MountOptions): MountedPanel {
   const store = new PanelStore(options.transport, options.locale);
+  store.siteAccess = options.siteAccess ?? null;
   const root: Root = createRoot(container);
   let theme =
     options.theme ?? (matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark');

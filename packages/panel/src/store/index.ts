@@ -1,4 +1,5 @@
 export { PanelStore } from './PanelStore';
+export type { SiteAccess, SiteAccessStatus } from './siteAccess';
 export {
   createInitialUIState,
   INSPECTOR_TAB_IDS,

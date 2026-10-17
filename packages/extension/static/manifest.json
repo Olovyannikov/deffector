@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "deffector — effector DevTools",
   "short_name": "deffector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DevTools for effector: each user action as one transaction, time travel, state injection, effect overrides, replayable traces.",
   "minimum_chrome_version": "116",
   "icons": {
@@ -23,9 +23,26 @@
   "background": {
     "service_worker": "background.js"
   },
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": [
+    "http://localhost/*",
+    "https://localhost/*",
+    "http://127.0.0.1/*",
+    "https://127.0.0.1/*",
+    "http://*.localhost/*",
+    "https://*.localhost/*"
+  ],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "http://localhost/*",
+        "https://localhost/*",
+        "http://127.0.0.1/*",
+        "https://127.0.0.1/*",
+        "http://*.localhost/*",
+        "https://*.localhost/*"
+      ],
       "js": ["content.js"],
       "run_at": "document_start",
       "all_frames": false

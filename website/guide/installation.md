@@ -63,6 +63,15 @@ toolbar switches it).
 On a page without an agent the popup says “No deffector agent on this page” and shows the import to
 add.
 
+### Sites other than localhost
+
+On `localhost` and `127.0.0.1` (any port) the extension works right after installation. On any other
+address — a staging server, a preview deployment, a local domain — Chrome lets it in only after you
+allow that site once: the panel shows “deffector has no access to _host_” with an **Allow on this
+site** button (the toolbar popup offers the same). The extension then connects to the open page and to
+every page of that site from then on. Allowed sites are listed in `chrome://extensions` → deffector →
+**Details** → **Site access**, where you can also remove them.
+
 ### Rebuilding
 
 After `npm run build`, press ↻ on the extension card in `chrome://extensions` and reopen DevTools.

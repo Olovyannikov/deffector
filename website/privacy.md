@@ -16,9 +16,10 @@ makes no network requests of its own and contains no analytics, ads or trackers.
 
 What it does on your computer:
 
-- **On every page** a small content script checks whether the page runs the deffector agent (the
-  `@deffector/agent` package, which a developer adds to their own app). On pages without it, the
-  script does nothing else.
+- **On localhost and on the sites you allow** a small content script checks whether the page runs the
+  deffector agent (the `@deffector/agent` package, which a developer adds to their own app). On pages
+  without it, the script does nothing else. The extension has no access to other sites: it asks for
+  a site only when you press “Allow on this site”.
 - **On pages with the agent** it passes messages between the agent and the deffector panel in Chrome
   DevTools: the app's events, store values and effect calls, shown so the developer can debug them.
   These messages stay inside your browser and are kept only in memory while DevTools is open.

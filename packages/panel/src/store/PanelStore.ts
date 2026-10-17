@@ -13,6 +13,7 @@ import type {
   Tx,
   UnitInfo,
 } from '@deffector/protocol';
+import type { SiteAccess } from './siteAccess';
 import { detectLocale, textsByLocale, type Locale, type Texts } from '../i18n';
 import { PresetLibrary } from './presets';
 import { SavedFilterList } from './savedFilters';
@@ -61,6 +62,9 @@ export class PanelStore {
 
   /** set by the host (the extension): opens a file in the Sources panel */
   opener: ((url: string, line?: number) => void) | null = null;
+
+  /** set by the host (the extension): whether deffector may run on the inspected site */
+  siteAccess: SiteAccess | null = null;
 
   locale: Locale;
 

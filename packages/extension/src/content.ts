@@ -12,6 +12,11 @@ import {
   type PanelCommand,
 } from '@deffector/protocol';
 
+/** The script is injected again into open pages when access to a site is granted: run once. */
+const contentScriptMarker = globalThis as typeof globalThis & {
+  deffectorContentScriptLoaded?: true;
+};
+
 let backgroundPort: chrome.runtime.Port | null = null;
 
 function ensureBackgroundPort(): chrome.runtime.Port | null {
@@ -44,16 +49,23 @@ function isAgentEnvelope(data: unknown): data is Envelope<AgentMessage> {
   return !!candidate && candidate.source === AGENT_SOURCE && !!candidate.payload;
 }
 
-window.addEventListener('message', (event) => {
-  if (event.source !== window || !isAgentEnvelope(event.data)) return;
-  const port = ensureBackgroundPort();
-  try {
-    port?.postMessage(event.data.payload);
-  } catch {
-    backgroundPort = null;
-  }
-});
+function listen() {
+  window.addEventListener('message', (event) => {
+    if (event.source !== window || !isAgentEnvelope(event.data)) return;
+    const port = ensureBackgroundPort();
+    try {
+      port?.postMessage(event.data.payload);
+    } catch {
+      backgroundPort = null;
+    }
+  });
 
-chrome.runtime.onMessage.addListener((request) => {
-  if (request?.deffector === 'wake') ensureBackgroundPort();
-});
+  chrome.runtime.onMessage.addListener((request) => {
+    if (request?.deffector === 'wake') ensureBackgroundPort();
+  });
+}
+
+if (!contentScriptMarker.deffectorContentScriptLoaded) {
+  contentScriptMarker.deffectorContentScriptLoaded = true;
+  listen();
+}

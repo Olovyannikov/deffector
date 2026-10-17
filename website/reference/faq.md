@@ -10,7 +10,9 @@ The panel is open but the page has not answered. Check, in order:
    build? The agent is a no-op there on purpose.”). Use the dev server.
 3. **The extension was reloaded** (after `npm run build`). Content scripts of the old version are
    orphaned: reload the page and reopen DevTools.
-4. **An iframe.** The content script runs only in the top frame; an app inside an iframe is not
+4. **An address other than localhost.** There the extension needs your permission once: the panel
+   shows “deffector has no access to _host_” — press **Allow on this site**.
+5. **An iframe.** The content script runs only in the top frame; an app inside an iframe is not
    connected.
 
 The toolbar icon of the extension tells the same thing at a glance: grey and “No deffector agent on this

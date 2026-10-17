@@ -1,4 +1,4 @@
-import { mountPanel } from '@deffector/panel';
+import { mountPanel, type SiteAccess } from '@deffector/panel';
 import type { AgentMessage, PanelCommand, PanelTransport } from '@deffector/protocol';
 
 /**
@@ -63,6 +63,34 @@ function detectTheme(): 'dark' | 'light' {
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
+/** The inspected page's origin: DevTools can evaluate in the page without any host permission. */
+function readInspectedOrigin(): Promise<string | null> {
+  const fromQuery = query.get('origin');
+  if (fromQuery) return Promise.resolve(fromQuery);
+  const inspectedWindow = chrome.devtools?.inspectedWindow;
+  if (!inspectedWindow) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    inspectedWindow.eval('location.origin', (result, exception) => {
+      resolve(exception || typeof result !== 'string' ? null : result);
+    });
+  });
+}
+
+const siteAccess: SiteAccess = {
+  async check() {
+    const origin = await readInspectedOrigin();
+    if (!origin || !/^https?:/.test(origin)) return null;
+    const reply: { granted: boolean } | undefined = await chrome.runtime.sendMessage({
+      deffector: 'site-access',
+      origin,
+    });
+    return { origin, granted: !!reply?.granted };
+  },
+  request(origin) {
+    chrome.runtime.sendMessage({ deffector: 'request-site-access', origin }).catch(() => {});
+  },
+};
+
 const locale = query.get('lang');
 const theme = detectTheme();
 document.documentElement.style.background = theme === 'dark' ? '#1F1F1F' : '#FFFFFF';
@@ -73,6 +101,7 @@ const panel = mountPanel(rootElement, {
   theme,
   locale: locale === 'ru' || locale === 'en' ? locale : undefined,
   density: query.get('density') === 'comfortable' ? 'comfortable' : 'compact',
+  siteAccess,
 });
 
 // file links in the panel open the Sources panel at the line

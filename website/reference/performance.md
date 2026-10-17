@@ -87,5 +87,5 @@ Every entry point resolves to a no-op through the `production` export condition,
 
 ## Pages without an agent
 
-The extension's content script runs on every page but opens a connection to the extension only after
+The extension's content script runs on localhost and on the sites you allowed, and opens a connection to the extension only after
 the page's agent speaks, so pages without effector cost nothing.

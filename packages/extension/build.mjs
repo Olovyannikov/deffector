@@ -13,7 +13,7 @@ const targetArgument = process.argv.find((argument) => argument.startsWith('--ta
 const isFirefox = targetArgument?.split('=')[1] === 'firefox';
 const outputDirectory = join(packageDirectory, isFirefox ? 'dist-firefox' : 'dist');
 /** One script per extension page or context, bundled from src/<name>.ts to <name>.js. */
-const ENTRY_NAMES = ['background', 'content', 'devtools', 'panel', 'popup'];
+const ENTRY_NAMES = ['background', 'content', 'devtools', 'panel', 'popup', 'grant'];
 
 rmSync(outputDirectory, { recursive: true, force: true });
 mkdirSync(outputDirectory, { recursive: true });

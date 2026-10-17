@@ -5,6 +5,12 @@
  * everything again with `connect`.
  */
 import type { AgentMessage, HelloInfo, PanelCommand } from '@deffector/protocol';
+import {
+  hasSiteAccess,
+  injectIntoOpenTabs,
+  openAccessRequest,
+  syncGrantedSites,
+} from './site-access';
 
 const CONTENT_PORT_NAME = 'deffector-content';
 /** Panel ports are named `deffector-panel:<tabId>`. */
@@ -18,6 +24,8 @@ interface TabConnection {
   /** commands sent by the panel while the page had no live content port */
   queue: PanelCommand[];
   hello: HelloInfo | null;
+  /** the panel's last `connect`, sent again when a page gets the content script late */
+  lastConnect: PanelCommand | null;
 }
 
 const tabs = new Map<number, TabConnection>();
@@ -25,7 +33,7 @@ const tabs = new Map<number, TabConnection>();
 function getTabConnection(tabId: number): TabConnection {
   let connection = tabs.get(tabId);
   if (!connection) {
-    connection = { content: null, panel: null, queue: [], hello: null };
+    connection = { content: null, panel: null, queue: [], hello: null, lastConnect: null };
     tabs.set(tabId, connection);
   }
   return connection;
@@ -106,7 +114,10 @@ function acceptPanelPort(port: chrome.runtime.Port) {
   }
   const connection = getTabConnection(tabId);
   connection.panel = port;
-  port.onMessage.addListener((command: PanelCommand) => sendToContent(tabId, connection, command));
+  port.onMessage.addListener((command: PanelCommand) => {
+    if (command.type === 'connect') connection.lastConnect = command;
+    sendToContent(tabId, connection, command);
+  });
   port.onDisconnect.addListener(() => {
     if (connection.panel !== port) return;
     connection.panel = null;
@@ -139,10 +150,55 @@ interface LiveTab {
 
 chrome.tabs.onRemoved.addListener((tabId) => tabs.delete(tabId));
 
-// the popup asks what is on the current tab
+/**
+ * A page got the content script after it loaded (access was just granted): the agent's first
+ * `hello` was lost, so ask it again with the panel's `connect`.
+ */
+function reconnectLatePage(tabId: number) {
+  const connection = getTabConnection(tabId);
+  if (connection.panel && connection.lastConnect) {
+    sendToContent(tabId, connection, connection.lastConnect);
+  } else {
+    chrome.tabs.sendMessage(tabId, { deffector: 'wake' }).catch(ignoreError);
+  }
+}
+
+chrome.permissions.onAdded.addListener(async ({ origins = [] }) => {
+  await syncGrantedSites().catch(ignoreError);
+  for (const tabId of await injectIntoOpenTabs(origins)) reconnectLatePage(tabId);
+});
+chrome.permissions.onRemoved.addListener(() => {
+  syncGrantedSites().catch(ignoreError);
+});
+// the registration survives restarts, but permissions may have changed while the worker slept
+syncGrantedSites().catch(ignoreError);
+
+interface SiteAccessRequest {
+  deffector: 'site-access' | 'request-site-access';
+  origin: string;
+}
+
+const isSiteAccessRequest = (request: unknown): request is SiteAccessRequest =>
+  typeof (request as SiteAccessRequest | null)?.origin === 'string';
+
 chrome.runtime.onMessage.addListener((request, _sender, reply) => {
+  // the popup asks what is on the current tab
   if (request?.deffector === 'status' && typeof request.tabId === 'number') {
     const connection = tabs.get(request.tabId);
     reply({ hello: connection?.hello ?? null, panel: !!connection?.panel });
+    return false;
   }
+  if (!isSiteAccessRequest(request)) return false;
+  // the panel: may deffector run on the inspected page's origin?
+  if (request.deffector === 'site-access') {
+    hasSiteAccess(request.origin).then(
+      (granted) => reply({ granted }),
+      () => reply({ granted: false }),
+    );
+    return true; // the reply is asynchronous
+  }
+  if (request.deffector === 'request-site-access') {
+    openAccessRequest(request.origin).catch(ignoreError);
+  }
+  return false;
 });

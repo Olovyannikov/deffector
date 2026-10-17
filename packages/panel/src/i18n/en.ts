@@ -32,6 +32,10 @@ export const en = {
     'Add the agent as the first import of your app and reload the page. deffector connects by itself.',
   waitingCode: "// first line of src/main.ts\nimport '@deffector/agent'",
   waitingHint: 'Production build? The agent is a no-op there on purpose.',
+  siteAccessTitle: (host: string) => `deffector has no access to ${host}`,
+  siteAccessText:
+    'On localhost the extension runs by itself. To debug an app on another address, allow this site once.',
+  siteAccessButton: 'Allow on this site',
   emptyLog: 'No transactions yet. Use the app: every action shows up here.',
   noMatch: 'No transaction matches the filter.',
   resetFilter: 'Reset filter',
