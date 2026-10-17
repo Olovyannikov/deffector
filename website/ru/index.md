@@ -15,9 +15,6 @@ hero:
     - theme: alt
       text: Что такое deffector?
       link: /ru/guide/introduction
-    - theme: alt
-      text: GitHub
-      link: https://github.com/mxmvshnvsk/deffector
 
 features:
   - title: Одно действие — одна транзакция

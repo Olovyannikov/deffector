@@ -1,8 +1,10 @@
 import { defineConfig } from 'vitepress';
+import { AUTHOR, REPOSITORY_URL } from './theme/project.mjs';
 
 // GitHub Pages serves a project site from /<repo>/; set DOCS_BASE=/ for a custom domain
 const base = process.env.DOCS_BASE || '/deffector/';
-const repo = 'https://github.com/mxmvshnvsk/deffector';
+const repo = REPOSITORY_URL;
+const authorLink = `<a href="${AUTHOR.url}" target="_blank" rel="noopener">${AUTHOR.name}</a>`;
 
 function sidebarEn() {
   return [
@@ -98,6 +100,7 @@ export default defineConfig({
     ['link', { rel: 'icon', href: `${base}favicon.ico`, sizes: '48x48' }],
     ['link', { rel: 'apple-touch-icon', href: `${base}apple-touch-icon.png` }],
     ['meta', { name: 'theme-color', content: '#14161D' }],
+    ['meta', { name: 'author', content: AUTHOR.name }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'deffector' }],
     ['meta', { property: 'og:title', content: 'deffector — DevTools for effector' }],
@@ -171,8 +174,8 @@ export default defineConfig({
           text: 'Edit this page on GitHub',
         },
         footer: {
-          message: 'Released under the MIT License.',
-          copyright: 'deffector — DevTools for effector',
+          message: `Released under the <a href="${repo}/blob/main/LICENSE">MIT License</a>.`,
+          copyright: `Copyright © 2026 ${authorLink}`,
         },
       },
     },
@@ -203,8 +206,8 @@ export default defineConfig({
           text: 'Изменить эту страницу на GitHub',
         },
         footer: {
-          message: 'Распространяется по лицензии MIT.',
-          copyright: 'deffector — DevTools для effector',
+          message: `Распространяется по <a href="${repo}/blob/main/LICENSE">лицензии MIT</a>.`,
+          copyright: `© 2026 ${authorLink}`,
         },
         outline: { label: 'На этой странице', level: [2, 3] },
         docFooter: { prev: 'Предыдущая страница', next: 'Следующая страница' },
