@@ -1,7 +1,8 @@
 // Renders the extension icons from the brand SVGs in assets/brand into static/icons.
 // The PNGs are committed; run this only after the logo changes:
 //   node packages/extension/scripts/render-icons.mjs
-// Small sizes use the simplified favicon mark, which stays readable at 16–32 px.
+// Small sizes use the simplified favicon mark, which stays readable at 16–32 px. The 128 px icon
+// keeps 16 px of transparent padding, as the Chrome Web Store asks (96 px artwork).
 // `-off` variants (toolbar icon while the tab has no agent) are greyed out.
 import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -17,7 +18,7 @@ const ICONS = [
   { size: 16, source: 'favicon.svg' },
   { size: 32, source: 'favicon.svg' },
   { size: 48, source: 'logo.svg' },
-  { size: 128, source: 'logo.svg' },
+  { size: 128, source: 'logo.svg', padding: 16 },
 ];
 
 const VARIANTS = [
@@ -32,15 +33,15 @@ mkdirSync(outputDirectory, { recursive: true });
 const browser = await chromium.launch();
 const page = await browser.newPage();
 
-for (const { size, source } of ICONS) {
+for (const { size, source, padding = 0 } of ICONS) {
   for (const { suffix, filter } of VARIANTS) {
     await page.setViewportSize({ width: size, height: size });
     await page.setContent(
-      `<body style="margin:0"><img src="${toDataUrl(source)}" width="${size}" height="${size}" style="display:block;filter:${filter}"></body>`,
+      `<body style="margin:0;padding:${padding}px"><img src="${toDataUrl(source)}" width="${size - 2 * padding}" height="${size - 2 * padding}" style="display:block;filter:${filter}"></body>`,
     );
     await page.locator('img').evaluate((image) => image.decode());
     await page
-      .locator('img')
+      .locator('body')
       .screenshot({ path: join(outputDirectory, `${size}${suffix}.png`), omitBackground: true });
   }
 }

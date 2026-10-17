@@ -32,6 +32,7 @@ const toolingFiles = [
   'e2e/**',
   'demo/next-ssr/instrumentation.ts',
   'website/.vitepress/**',
+  'website/scripts/**',
 ];
 
 export default defineConfig([
@@ -46,6 +47,7 @@ export default defineConfig([
       'test-results/**',
       'playwright-report/**',
       'demo/next-ssr/next-env.d.ts',
+      'website/public/demo/**',
     ],
   },
 

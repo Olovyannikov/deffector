@@ -4,6 +4,12 @@ The repository has one effector model (`demo/shared`) rendered in every supporte
 built with the effector babel plugin, so sids are the same everywhere: a trace recorded in React replays
 in Vue, Solid or Next.js.
 
+## Live demo
+
+The React demo runs on this site: [open the live demo](/demo/){target="_self"} with the extension
+installed, then open DevTools → **deffector**. Its API is simulated in the page, so nothing leaves the
+browser.
+
 ## Run
 
 ```sh

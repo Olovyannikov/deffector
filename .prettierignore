@@ -9,3 +9,4 @@ package-lock.json
 demo/next-ssr/next-env.d.ts
 website/.vitepress/cache
 website/.vitepress/dist
+website/public/demo

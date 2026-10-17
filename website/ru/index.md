@@ -15,6 +15,10 @@ hero:
     - theme: alt
       text: Что такое deffector?
       link: /ru/guide/introduction
+    - theme: alt
+      text: Живое демо
+      link: /demo/
+      target: _self
 
 features:
   - title: Одно действие — одна транзакция

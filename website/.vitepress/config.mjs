@@ -92,8 +92,9 @@ export default defineConfig({
   description: 'DevTools for effector: transactions, time travel, state injection, trace replay',
   cleanUrls: true,
   lastUpdated: true,
-  // demo addresses (http://localhost:5171 …) are links on purpose; every other dead link fails the build
-  ignoreDeadLinks: 'localhostLinks',
+  // demo addresses (http://localhost:5171 …) and the live demo (built into /demo/ next to the docs)
+  // are links on purpose; every other dead link fails the build
+  ignoreDeadLinks: [/^https?:\/\/(localhost|127\.0\.0\.1)/, /^\/demo\//],
   // `head` is not rewritten with `base`, so every path here carries it explicitly
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
@@ -174,7 +175,7 @@ export default defineConfig({
           text: 'Edit this page on GitHub',
         },
         footer: {
-          message: `Released under the <a href="${repo}/blob/main/LICENSE">MIT License</a>.`,
+          message: `Released under the <a href="${repo}/blob/main/LICENSE">MIT License</a> · <a href="${base}privacy">Privacy policy</a>`,
           copyright: `Copyright © 2026 ${authorLink}`,
         },
       },
@@ -206,7 +207,7 @@ export default defineConfig({
           text: 'Изменить эту страницу на GitHub',
         },
         footer: {
-          message: `Распространяется по <a href="${repo}/blob/main/LICENSE">лицензии MIT</a>.`,
+          message: `Распространяется по <a href="${repo}/blob/main/LICENSE">лицензии MIT</a> · <a href="${base}ru/privacy">Политика конфиденциальности</a>`,
           copyright: `© 2026 ${authorLink}`,
         },
         outline: { label: 'На этой странице', level: [2, 3] },

@@ -41,7 +41,7 @@
     "dev:next": "npm run dev -w @deffector-demo/next-ssr",
     "dev:lab": "npm run dev -w @deffector-demo/lab",
     "docs:dev": "npm run dev -w @deffector/website",
-    "docs:build": "npm run build -w @deffector/website"
+    "docs:build": "npm run build:demo-shared && npm run build -w @deffector/website"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
