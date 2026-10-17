@@ -19,7 +19,12 @@ peer-зависимости: ставьте только те, что испол
 
 ## Расширение браузера
 
-Расширения пока нет в магазинах: соберите его из исходников и загрузите как распакованное.
+**Chrome и Edge:** установите deffector из
+[Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn). Edge ставит его оттуда же
+(разрешите расширения из других магазинов, когда Edge спросит).
+
+**Firefox** или самый свежий код из репозитория: соберите расширение из исходников и загрузите как
+распакованное.
 
 ```sh
 git clone https://github.com/mxmvshnvsk/deffector.git

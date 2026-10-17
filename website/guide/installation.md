@@ -18,7 +18,11 @@ Then follow the [Quick start](/guide/quick-start).
 
 ## The browser extension
 
-The extension is not in the browser stores yet: build it from source and load it unpacked.
+**Chrome and Edge:** install deffector from the
+[Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn). Edge installs it from there too
+(allow extensions from other stores when Edge asks).
+
+**Firefox,** or the latest code from the repository: build it from source and load it unpacked.
 
 ```sh
 git clone https://github.com/mxmvshnvsk/deffector.git

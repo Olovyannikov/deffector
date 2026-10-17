@@ -13,6 +13,9 @@ hero:
       text: Quick start
       link: /guide/quick-start
     - theme: alt
+      text: Add to Chrome
+      link: https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn
+    - theme: alt
       text: What is deffector?
       link: /guide/introduction
     - theme: alt

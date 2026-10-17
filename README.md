@@ -24,7 +24,7 @@ Works with React, Vue, Solid, Next.js (App Router, `@effector/next`), plain Node
 npm install @deffector/agent
 ```
 
-Install the browser extension (see [Installation](https://mxmvshnvsk.github.io/deffector/guide/installation)), then:
+Install the browser extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn) (Chrome and Edge; Firefox: see [Installation](https://mxmvshnvsk.github.io/deffector/guide/installation)), then:
 
 ```ts
 // the very first import of your app

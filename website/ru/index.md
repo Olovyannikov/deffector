@@ -13,6 +13,9 @@ hero:
       text: Быстрый старт
       link: /ru/guide/quick-start
     - theme: alt
+      text: Установить в Chrome
+      link: https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn
+    - theme: alt
       text: Что такое deffector?
       link: /ru/guide/introduction
     - theme: alt
