@@ -156,12 +156,11 @@ registerScope(scope, { name: `request #${++n}` });
 
 The client then shows up in the extension, the server in the standalone app.
 
-**`next.config.mjs`:** the browser entry of the agent is shipped as TypeScript sources, so let Next
-compile it; and keep one effector instance on the server, so the agent hooks the one the app uses:
+**`next.config.mjs`:** keep one effector instance on the server, so the agent hooks the one the app
+uses:
 
 ```js
 export default {
-  transpilePackages: ['@deffector/agent', '@deffector/protocol'],
   serverExternalPackages: ['effector'],
 };
 ```

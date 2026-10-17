@@ -157,13 +157,11 @@ registerScope(scope, { name: `request #${++n}` });
 
 Тогда клиент виден в расширении, а сервер — в отдельном приложении.
 
-**`next.config.mjs`:** браузерная точка входа агента поставляется в исходниках на TypeScript, поэтому
-пусть Next её компилирует; а на сервере должен быть один экземпляр effector, чтобы агент подключился к
-тому же, что и приложение:
+**`next.config.mjs`:** на сервере должен быть один экземпляр effector, чтобы агент подключился к тому,
+который использует приложение:
 
 ```js
 export default {
-  transpilePackages: ['@deffector/agent', '@deffector/protocol'],
   serverExternalPackages: ['effector'],
 };
 ```

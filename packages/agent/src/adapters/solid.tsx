@@ -2,7 +2,8 @@
 import { createSignal, onCleanup, Show, type JSX } from 'solid-js';
 import { Provider } from 'effector-solid';
 import type { Scope } from 'effector';
-import { registerScope } from '..';
+// the package's own entry: the same agent instance the app imported
+import { registerScope } from '@deffector/agent';
 
 interface DeffectorProviderProps {
   value: Scope;

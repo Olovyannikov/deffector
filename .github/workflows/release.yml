@@ -1,0 +1,47 @@
+# Publishes @deffector/agent and @deffector/standalone to npm when a version tag (v0.1.1 …) is pushed.
+# Authentication is npm Trusted Publishing (OIDC): no token in the repository secrets, and npm adds a
+# provenance statement to each version. One-time setup per package on npmjs.com:
+# package → Settings → Trusted publishing → GitHub Actions: mxmvshnvsk / deffector / release.yml.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # OIDC token for npm Trusted Publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted Publishing needs npm 11.5.1 or newer; Node 22 ships npm 10
+      - run: npm install --global npm@11
+
+      - run: npm ci
+
+      - name: Check that the tag matches the package versions
+        run: |
+          node -e '
+            const tag = process.env.GITHUB_REF_NAME.replace(/^v/, "");
+            for (const name of ["agent", "standalone"]) {
+              const { version } = require(`./packages/${name}/package.json`);
+              if (version !== tag) throw new Error(`@deffector/${name} is ${version}, the tag is v${tag}`);
+            }
+          '
+
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+      # prepublishOnly builds each package
+      - run: npm publish --workspace @deffector/agent --workspace @deffector/standalone

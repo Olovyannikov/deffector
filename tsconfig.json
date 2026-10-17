@@ -14,7 +14,8 @@
     "demo/lab/src",
     "demo/vue-vite/src",
     "demo/*/vite.config.ts",
-    "*.config.ts"
+    "*.config.ts",
+    "packages/*/*.config.ts"
   ],
   "exclude": [
     "**/node_modules",

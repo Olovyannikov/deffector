@@ -1,6 +1,7 @@
 {
   "name": "@deffector/protocol",
   "version": "0.1.0",
+  "private": true,
   "description": "Wire protocol, value encoding and trace format shared by the deffector agent and panel",
   "license": "MIT",
   "type": "module",

@@ -15,7 +15,7 @@ npm run build
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `packages/protocol`   | message types, the `$t`-tagged value encoding, the trace format and the compatibility check                                                                                                                                |
 | `packages/agent`      | runs in the page: hooks `setInspector` / `setGraphInspector`, groups steps into transactions, keeps snapshots, time travel, edits, replay, effect overrides, health checks; adapters for React, Vue, Solid; the Node entry |
-| `packages/panel`      | the UI (React), shared by the extension and the standalone app; `src/i18n.ts` holds every text in English and Russian                                                                                                      |
+| `packages/panel`      | the UI (React), shared by the extension and the standalone app; `src/i18n/` (`en.ts`, `ru.ts`) holds every text in English and Russian                                                                                     |
 | `packages/extension`  | the MV3 extension for Chrome/Edge (`dist/`) and Firefox (`dist-firefox/`): content script ⇄ background ⇄ DevTools panel                                                                                                    |
 | `packages/standalone` | `npx @deffector/standalone`: serves the panel and relays agents over WebSocket                                                                                                                                             |
 | `demo/*`              | one effector model (`demo/shared`) in React, Vue, Solid, Next.js, Node SSR, global mode and without the plugin; `demo/lab` for big graphs and edge cases                                                                   |
@@ -57,9 +57,9 @@ EFFECTOR_DIST=/path/to/effector/npm/effector npx vitest run -c vitest.upstream.c
 
 ## Working on the panel
 
-The panel is plain React with its own small store (`packages/panel/src/store.ts`). Every user-visible
-string lives in `packages/panel/src/i18n.ts` (and the agent's own texts — Health items, notes — in
-`packages/agent/src/i18n.ts`); add both languages. The extension and the standalone app mount the same
+The panel is plain React with its own small store (`packages/panel/src/store/`). Every user-visible
+string lives in `packages/panel/src/i18n/` (and the agent's own texts — Health items, notes — in
+`packages/agent/src/i18n/`); add both languages. The extension and the standalone app mount the same
 panel, so check both: `npm run build`, reload the extension, and `npm run standalone`.
 
 ## Working on these docs
@@ -72,3 +72,26 @@ Pages are Markdown in `website/` — English at the root, Russian under `website
 file names. Keep the two in step. Screenshots live in `website/public/screens/` (`dark-*` and
 `light-*` pairs switch with the site theme). The site is deployed to GitHub Pages by `.github/workflows/docs.yml`
 (Settings → Pages → Source: GitHub Actions; for a custom domain set the `DOCS_BASE` variable to `/`).
+
+## Releasing
+
+`@deffector/agent` and `@deffector/standalone` are published to npm; the other packages are private.
+The agent is built with tsup into `dist/` (ESM and bundled type declarations; `@deffector/protocol` is
+inlined), and every entry has a no-op twin under the `production` export condition. Inside this
+repository the demos read the agent from its sources through the `@deffector/source` condition.
+
+```sh
+npm run release:check   # what would be published (npm pack --dry-run)
+```
+
+To release: bump `version` in both `packages/agent/package.json` and `packages/standalone/package.json`,
+commit, then tag and push — `.github/workflows/release.yml` checks, tests and publishes:
+
+```sh
+git tag v0.1.1 && git push origin v0.1.1
+```
+
+The workflow uses npm Trusted Publishing, so the repository needs no npm token: on npmjs.com, each
+package → Settings → Trusted publishing → GitHub Actions → `mxmvshnvsk` / `deffector` / `release.yml`.
+The first version of a package is published by hand (`npm publish -w @deffector/agent -w @deffector/standalone`),
+because Trusted publishing is configured on an existing package.

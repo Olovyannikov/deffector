@@ -1,6 +1,7 @@
 {
   "name": "@deffector/panel",
   "version": "0.1.0",
+  "private": true,
   "description": "deffector UI: transaction log, stores, effects, graph, traces and health",
   "license": "MIT",
   "type": "module",

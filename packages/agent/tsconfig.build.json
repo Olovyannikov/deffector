@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": [],
+    "noEmit": false
+  },
+  "include": ["src"],
+  "exclude": ["src/adapters/solid.tsx", "src/adapters/solid-noop.tsx"]
+}

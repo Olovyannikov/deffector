@@ -15,7 +15,7 @@ npm run build
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `packages/protocol`   | типы сообщений, кодирование значений с тегом `$t`, формат трейса и проверка совместимости                                                                                                                                                                     |
 | `packages/agent`      | работает в странице: подключается к `setInspector` / `setGraphInspector`, собирает шаги в транзакции, хранит снимки, перемещение во времени, правки, воспроизведение, подмену эффектов, проверки Health; адаптеры для React, Vue, Solid; точка входа для Node |
-| `packages/panel`      | интерфейс (React), общий для расширения и отдельного приложения; в `src/i18n.ts` — все тексты на английском и русском                                                                                                                                         |
+| `packages/panel`      | интерфейс (React), общий для расширения и отдельного приложения; в `src/i18n/` (`en.ts`, `ru.ts`) — все тексты на английском и русском                                                                                                                        |
 | `packages/extension`  | расширение MV3 для Chrome/Edge (`dist/`) и Firefox (`dist-firefox/`): content script ⇄ background ⇄ панель DevTools                                                                                                                                           |
 | `packages/standalone` | `npx @deffector/standalone`: отдаёт панель и пересылает сообщения агентов по WebSocket                                                                                                                                                                        |
 | `demo/*`              | одна модель effector (`demo/shared`) в React, Vue, Solid, Next.js, Node SSR, глобальном режиме и без плагина; `demo/lab` — большие графы и пограничные случаи                                                                                                 |
@@ -57,9 +57,9 @@ EFFECTOR_DIST=/path/to/effector/npm/effector npx vitest run -c vitest.upstream.c
 
 ## Работа над панелью
 
-Панель — обычный React с небольшим собственным стором (`packages/panel/src/store.ts`). Все видимые
-пользователю строки лежат в `packages/panel/src/i18n.ts` (а собственные тексты агента — пункты Health,
-пометки шагов — в `packages/agent/src/i18n.ts`); добавляйте оба языка. Расширение и отдельное
+Панель — обычный React с небольшим собственным стором (`packages/panel/src/store/`). Все видимые
+пользователю строки лежат в `packages/panel/src/i18n/` (а собственные тексты агента — пункты Health,
+пометки шагов — в `packages/agent/src/i18n/`); добавляйте оба языка. Расширение и отдельное
 приложение монтируют одну и ту же панель, поэтому проверяйте обе: `npm run build`, перезагрузка
 расширения и `npm run standalone`.
 
@@ -73,3 +73,27 @@ npm run docs:dev        # адрес будет в выводе, наприме�
 Держите обе версии в согласии. Скриншоты лежат в `website/public/screens/` (пары `dark-*` и `light-*`
 переключаются вместе с темой сайта). Сайт публикуется в GitHub Pages workflow `.github/workflows/docs.yml`
 (Settings → Pages → Source: GitHub Actions; для своего домена задайте переменную `DOCS_BASE` = `/`).
+
+## Публикация
+
+В npm публикуются `@deffector/agent` и `@deffector/standalone`, остальные пакеты приватные. Агент
+собирается tsup в `dist/` (ESM и собранные объявления типов; `@deffector/protocol` встроен внутрь), и у
+каждой точки входа есть пустой двойник под условием экспорта `production`. Внутри репозитория демо
+берут агент из исходников через условие `@deffector/source`.
+
+```sh
+npm run release:check   # что уйдёт в npm (npm pack --dry-run)
+```
+
+Чтобы выпустить версию: поднимите `version` в `packages/agent/package.json` и
+`packages/standalone/package.json`, закоммитьте, поставьте тег и отправьте его —
+`.github/workflows/release.yml` проверит, прогонит тесты и опубликует:
+
+```sh
+git tag v0.1.1 && git push origin v0.1.1
+```
+
+Workflow использует npm Trusted Publishing, поэтому npm-токен в репозитории не нужен: на npmjs.com у
+каждого пакета → Settings → Trusted publishing → GitHub Actions → `mxmvshnvsk` / `deffector` /
+`release.yml`. Первую версию пакета публикуют вручную (`npm publish -w @deffector/agent -w @deffector/standalone`),
+потому что Trusted publishing настраивается у уже существующего пакета.

@@ -20,6 +20,12 @@ Works with React, Vue, Solid, Next.js (App Router, `@effector/next`), plain Node
 
 ## Use it
 
+```sh
+npm install @deffector/agent
+```
+
+Install the browser extension (see [Installation](https://mxmvshnvsk.github.io/deffector/guide/installation)), then:
+
 ```ts
 // the very first import of your app
 import '@deffector/agent';

@@ -1,8 +1,27 @@
 {
   "name": "@deffector/standalone",
   "version": "0.1.0",
-  "description": "deffector as a standalone app: for SSR servers, Node scripts, tests and React Native — anything that is not a browser tab",
+  "description": "DevTools for effector outside a browser tab: the deffector panel for SSR servers, Node scripts, tests and React Native",
+  "keywords": [
+    "effector",
+    "devtools",
+    "debugger",
+    "ssr",
+    "nodejs",
+    "react-native",
+    "time-travel"
+  ],
+  "homepage": "https://mxmvshnvsk.github.io/deffector/guide/node-ssr",
+  "bugs": {
+    "url": "https://github.com/mxmvshnvsk/deffector/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mxmvshnvsk/deffector.git",
+    "directory": "packages/standalone"
+  },
   "license": "MIT",
+  "author": "Maxim Vishnevsky <mxmvshnvsk@gmail.com> (https://github.com/mxmvshnvsk)",
   "type": "module",
   "bin": {
     "deffector": "./bin/deffector.mjs"
@@ -12,9 +31,13 @@
     "server.mjs",
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "node ./build.mjs",
-    "start": "node ./bin/deffector.mjs"
+    "start": "node ./bin/deffector.mjs",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "ws": "^8.18.0"
@@ -23,5 +46,8 @@
     "@deffector/panel": "0.1.0",
     "@deffector/protocol": "0.1.0",
     "@types/ws": "^8.5.12"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
