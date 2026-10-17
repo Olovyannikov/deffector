@@ -12,7 +12,8 @@ messages between your process and that tab over a WebSocket.
 npx @deffector/standalone            # panel on http://localhost:8686
 ```
 
-From a clone of the repository: `npm run standalone`.
+From a clone of the repository: `npm run standalone`. Inside the repository `npx` finds the local
+workspace package first; to run the published one there, use `npx @deffector/standalone@latest`.
 
 | Flag / variable                  | Default     | Meaning                                                              |
 | -------------------------------- | ----------- | -------------------------------------------------------------------- |
@@ -144,6 +145,23 @@ if (__DEV__) {
 Render the app with `DeffectorProvider` from `@deffector/agent/react`, as in a web app, so that time
 travel and replay can swap the scope.
 
+## A browser app without the extension
+
+The agent can talk to the extension and to the standalone app at once, and its WebSocket works in a
+browser too. Connect a browser app to the standalone app when the extension is not available — Safari,
+a phone browser, a WebView or Electron — or to keep the panel in a separate window:
+
+```ts
+import '@deffector/agent';
+import { attachDeffectorNode } from '@deffector/agent/node';
+
+attachDeffectorNode({ name: 'web app' }); // ws://localhost:8686/agent
+```
+
+Despite its name, `attachDeffectorNode` only opens a WebSocket to the standalone app. If the extension
+is installed as well, both panels show the same agent and either can control it. For a phone on the
+network use `url: 'ws://<your computer's IP>:8686/agent'` and start the server with `--host 0.0.0.0`.
+
 ## Scripts and tests
 
 The same call works in any Node script, including a test run: start the standalone app, call
@@ -159,3 +177,10 @@ npm run dev:node-ssr          # terminal 2: server on http://localhost:5176
 
 Open http://localhost:5176 a few times (try `/?email=taken@example.com`) and look at the scopes in
 http://localhost:8686. See [Demos](/reference/demos).
+
+The React demo connects to the standalone app too when opened with `?standalone`:
+
+```sh
+npx @deffector/standalone@latest   # terminal 1: panel on http://localhost:8686
+npm run dev:react                  # terminal 2: open http://localhost:5171/?standalone
+```
