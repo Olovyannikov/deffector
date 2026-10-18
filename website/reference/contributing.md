@@ -102,14 +102,19 @@ The extension has its own version (`packages/extension/static/manifest.json`) an
 manifest version, commit, then tag and push:
 
 ```sh
-git tag extension-v0.1.2 && git push origin extension-v0.1.2
+git tag extension-v0.1.4 && git push origin extension-v0.1.4
 ```
 
-`.github/workflows/extension-release.yml` builds it, submits the Firefox build to the
-addons.mozilla.org catalogue with its source code (the repository secrets `AMO_JWT_ISSUER` and
-`AMO_JWT_SECRET`, from the AMO API keys page) and creates a GitHub release with
-`deffector-chrome-<version>.zip`. Mozilla reviews the version, then Firefox users get it from AMO. AMO
-accepts every version once, so each extension release needs a new version; a version already uploaded
-by hand is skipped. The same zip is what you
-upload to the Chrome Web Store. To build an existing tag again, run the workflow by hand
+`.github/workflows/extension-release.yml` builds it, creates a GitHub release with
+`deffector-chrome-<version>.zip` and submits the version to both stores: the Firefox build with its
+source code to addons.mozilla.org, the zip to the Chrome Web Store. Each store reviews the version and
+publishes it once approved. The repository secrets it needs:
+
+- `AMO_JWT_ISSUER`, `AMO_JWT_SECRET` — addons.mozilla.org → Developer Hub → API keys;
+- `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN` — a Google OAuth client with the Chrome Web
+  Store API enabled (`npx chrome-webstore-upload-keys` walks through it), and `CWS_PUBLISHER_ID` from the
+  Chrome Web Store developer dashboard. Without them the Chrome step is skipped.
+
+AMO accepts every version once, so each extension release needs a new version; a version already
+uploaded to AMO by hand is skipped. To build an existing tag again, run the workflow by hand
 (**Actions** → **extension release** → **Run workflow**) with that tag.

@@ -2,11 +2,15 @@
 # from packages/extension/static/manifest.json):
 #   - a GitHub release with deffector-chrome-<version>.zip (Chrome and Edge: the file uploaded to the
 #     Chrome Web Store; without the store, unzip it and Load unpacked in developer mode);
-#   - the Firefox build submitted to the addons.mozilla.org catalogue (listed); Mozilla reviews it and
-#     Firefox users get the update from there.
+#   - the Firefox build submitted to the addons.mozilla.org catalogue (listed);
+#   - the Chrome build submitted to the Chrome Web Store.
+# Both stores review the version and publish it themselves once approved.
 # The AMO upload needs the AMO_JWT_ISSUER and AMO_JWT_SECRET repository secrets (addons.mozilla.org →
 # Developer Hub → API keys). AMO accepts each version once: bump the manifest version for every
 # extension release. A version already on AMO (uploaded by hand) is skipped.
+# The Chrome Web Store upload needs CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN (a Google OAuth
+# client with the Chrome Web Store API) and CWS_PUBLISHER_ID (the developer dashboard → Account);
+# without them the step is skipped.
 name: extension release
 
 on:
@@ -100,6 +104,21 @@ jobs:
               exit "$status"
             fi
           fi
+
+      - name: Submit to the Chrome Web Store
+        env:
+          EXTENSION_ID: cnnimkkficcbbkaohlafpnbgpkhpkfjn
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+        run: |
+          if [ -z "$REFRESH_TOKEN" ] || [ -z "$PUBLISHER_ID" ]; then
+            echo "::notice::No Chrome Web Store secrets, the upload is skipped"
+            exit 0
+          fi
+          # uploads the zip and submits it for review; the store publishes it once approved
+          npx --yes chrome-webstore-upload-cli@4 --source "release/deffector-chrome-$VERSION.zip"
 
       - name: Create the release
         env:

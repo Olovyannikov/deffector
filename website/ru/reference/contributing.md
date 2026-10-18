@@ -104,13 +104,20 @@ Workflow использует npm Trusted Publishing, поэтому npm-ток�
 манифесте, закоммитьте, затем создайте и отправьте тег:
 
 ```sh
-git tag extension-v0.1.2 && git push origin extension-v0.1.2
+git tag extension-v0.1.4 && git push origin extension-v0.1.4
 ```
 
-`.github/workflows/extension-release.yml` собирает расширение, отправляет сборку для Firefox в каталог
-addons.mozilla.org вместе с исходниками (секреты репозитория `AMO_JWT_ISSUER` и `AMO_JWT_SECRET` со
-страницы API-ключей AMO) и создаёт релиз на GitHub с `deffector-chrome-<версия>.zip`. Mozilla проверяет
-версию, после чего пользователи Firefox получают её из AMO. AMO принимает каждую версию один раз,
-поэтому каждому релизу расширения нужна новая версия; версия, уже загруженная вручную, пропускается. Этот же zip загружается в Chrome Web Store. Чтобы собрать существующий
+`.github/workflows/extension-release.yml` собирает расширение, создаёт релиз на GitHub с
+`deffector-chrome-<версия>.zip` и отправляет версию в оба магазина: сборку для Firefox вместе с
+исходниками — в addons.mozilla.org, zip — в Chrome Web Store. Каждый магазин проверяет версию и
+публикует её после одобрения. Нужные секреты репозитория:
+
+- `AMO_JWT_ISSUER`, `AMO_JWT_SECRET` — addons.mozilla.org → Developer Hub → API-ключи;
+- `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN` — OAuth-клиент Google с включённым Chrome Web
+  Store API (по шагам проводит `npx chrome-webstore-upload-keys`), и `CWS_PUBLISHER_ID` из панели
+  разработчика Chrome Web Store. Без них шаг для Chrome пропускается.
+
+AMO принимает каждую версию один раз, поэтому каждому релизу расширения нужна новая версия; версия, уже
+загруженная в AMO вручную, пропускается. Чтобы собрать существующий
 тег заново, запустите workflow вручную (**Actions** → **extension release** → **Run workflow**) с этим
 тегом.
