@@ -1,11 +1,12 @@
-# Builds the browser extension and attaches it to a GitHub release when an extension tag is pushed
-# (extension-v0.1.1 …, the version from packages/extension/static/manifest.json):
-#   deffector-chrome-<version>.zip  — Chrome and Edge: unzip, then Load unpacked in developer mode
-#   deffector-firefox-<version>.xpi — Firefox: signed by addons.mozilla.org, installs in one click
-# The Firefox build is signed as "unlisted": AMO checks and signs it, but it does not appear in the
-# AMO catalogue. Signing needs the AMO_JWT_ISSUER and AMO_JWT_SECRET repository secrets
-# (addons.mozilla.org → Developer Hub → API keys). AMO signs each version once: bump the manifest
-# version for every extension release.
+# Releases the browser extension when an extension tag is pushed (extension-v0.1.2 …, the version
+# from packages/extension/static/manifest.json):
+#   - a GitHub release with deffector-chrome-<version>.zip (Chrome and Edge: the file uploaded to the
+#     Chrome Web Store; without the store, unzip it and Load unpacked in developer mode);
+#   - the Firefox build submitted to the addons.mozilla.org catalogue (listed); Mozilla reviews it and
+#     Firefox users get the update from there.
+# The AMO upload needs the AMO_JWT_ISSUER and AMO_JWT_SECRET repository secrets (addons.mozilla.org →
+# Developer Hub → API keys). AMO accepts each version once: bump the manifest version for every
+# extension release. A version already on AMO (uploaded by hand) is skipped.
 name: extension release
 
 on:
@@ -77,18 +78,28 @@ jobs:
           EOF
           (cd "$RUNNER_TEMP" && zip -q source.zip AMO-BUILD.md)
 
-      - name: Sign for Firefox (unlisted)
+      # Submits the version for review without waiting for it: reviews can take days
+      - name: Submit to addons.mozilla.org
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: |
+          set +e
           npx --yes web-ext@10 sign \
             --source-dir packages/extension/dist-firefox \
             --artifacts-dir "$RUNNER_TEMP/signed" \
-            --channel unlisted \
+            --channel listed \
             --upload-source-code "$RUNNER_TEMP/source.zip" \
-            --approval-timeout 1800000
-          mv "$RUNNER_TEMP"/signed/*.xpi "release/deffector-firefox-$VERSION.xpi"
+            --approval-timeout 0 2>&1 | tee "$RUNNER_TEMP/amo.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            if grep -qiE 'already exists|uploaded before' "$RUNNER_TEMP/amo.log"; then
+              echo "::notice::addons.mozilla.org already has $VERSION, nothing to upload"
+            else
+              exit "$status"
+            fi
+          fi
 
       - name: Create the release
         env:
@@ -97,7 +108,7 @@ jobs:
           cat > "$RUNNER_TEMP/notes.md" <<EOF
           **Chrome and Edge:** install from the [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn), or download \`deffector-chrome-$VERSION.zip\`, unzip it and load the folder with **Load unpacked** in \`chrome://extensions\` (developer mode).
 
-          **Firefox 140+:** download \`deffector-firefox-$VERSION.xpi\`, then in Firefox open \`about:addons\` → ⚙ → **Install Add-on From File…** (or drag the file onto a Firefox window). The file is signed by Mozilla, so it stays installed after a restart.
+          **Firefox 140+:** install from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/deffector/). A new version appears there after Mozilla reviews it.
 
           The agent is on npm: \`npm install @deffector/agent\`. Documentation: https://mxmvshnvsk.github.io/deffector/
           EOF

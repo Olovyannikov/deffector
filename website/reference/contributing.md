@@ -105,9 +105,11 @@ manifest version, commit, then tag and push:
 git tag extension-v0.1.2 && git push origin extension-v0.1.2
 ```
 
-`.github/workflows/extension-release.yml` builds it, signs the Firefox build on addons.mozilla.org as
-unlisted (the repository secrets `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`, from the AMO API keys page) and
-creates a GitHub release with `deffector-chrome-<version>.zip` and `deffector-firefox-<version>.xpi`. AMO
-signs every version once, so each extension release needs a new version. The same zip is what you
+`.github/workflows/extension-release.yml` builds it, submits the Firefox build to the
+addons.mozilla.org catalogue with its source code (the repository secrets `AMO_JWT_ISSUER` and
+`AMO_JWT_SECRET`, from the AMO API keys page) and creates a GitHub release with
+`deffector-chrome-<version>.zip`. Mozilla reviews the version, then Firefox users get it from AMO. AMO
+accepts every version once, so each extension release needs a new version; a version already uploaded
+by hand is skipped. The same zip is what you
 upload to the Chrome Web Store. To build an existing tag again, run the workflow by hand
 (**Actions** → **extension release** → **Run workflow**) with that tag.

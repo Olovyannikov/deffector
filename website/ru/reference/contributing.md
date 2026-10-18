@@ -107,10 +107,10 @@ Workflow использует npm Trusted Publishing, поэтому npm-ток�
 git tag extension-v0.1.2 && git push origin extension-v0.1.2
 ```
 
-`.github/workflows/extension-release.yml` собирает расширение, подписывает сборку для Firefox на
-addons.mozilla.org как unlisted (секреты репозитория `AMO_JWT_ISSUER` и `AMO_JWT_SECRET` со страницы
-API-ключей AMO) и создаёт релиз на GitHub с `deffector-chrome-<версия>.zip` и
-`deffector-firefox-<версия>.xpi`. AMO подписывает каждую версию один раз, поэтому каждому релизу
-расширения нужна новая версия. Этот же zip загружается в Chrome Web Store. Чтобы собрать существующий
+`.github/workflows/extension-release.yml` собирает расширение, отправляет сборку для Firefox в каталог
+addons.mozilla.org вместе с исходниками (секреты репозитория `AMO_JWT_ISSUER` и `AMO_JWT_SECRET` со
+страницы API-ключей AMO) и создаёт релиз на GitHub с `deffector-chrome-<версия>.zip`. Mozilla проверяет
+версию, после чего пользователи Firefox получают её из AMO. AMO принимает каждую версию один раз,
+поэтому каждому релизу расширения нужна новая версия; версия, уже загруженная вручную, пропускается. Этот же zip загружается в Chrome Web Store. Чтобы собрать существующий
 тег заново, запустите workflow вручную (**Actions** → **extension release** → **Run workflow**) с этим
 тегом.
