@@ -18,6 +18,18 @@ DevTools for [effector](https://effector.dev): every user action as one transact
 
 Works with React, Vue, Solid, Next.js (App Router, `@effector/next`), plain Node/SSR, React Native and global mode (no `fork()`), with or without the babel/swc plugin. Chrome, Edge and Firefox. English and Russian UI.
 
+## Requirements
+
+- **effector** 22.6+ (tested with 23.4.4 and 22.8.6)
+- **React** 16.8+ with effector-react 22+, **Vue** 3.3+ with effector-vue 23+, **Solid** 1.8+ with effector-solid 0.23+ — only for the framework you use
+- **Next.js** 13.4+ (App Router, `@effector/next`), tested with 15.5
+- **Browser** with the extension: Chrome or Edge 116+, Firefox 140+
+- **Node** 18+ for the standalone app; 22+ for the agent in a Node process (older: pass `WebSocket` from `ws`)
+- **TypeScript** 5.0+ with `moduleResolution` `"bundler"`, `"node16"` or `"nodenext"`
+- **Bundler** that reads the `exports` field (Vite, webpack 5, Next.js, esbuild, Rollup); Parcel 2 needs `"@parcel/resolver-default": { "packageExports": true }`
+
+Details: [Installation → Requirements](https://mxmvshnvsk.github.io/deffector/guide/installation#requirements).
+
 ## Use it
 
 ```sh
@@ -35,7 +47,7 @@ Then render with a provider deffector can switch (for time travel and replay):
 
 ```tsx
 // React
-import { DeffectorProvider } from '@deffector/agent/react';
+import { DeffectorProvider } from '@deffector/agent/react'; // hooks from effector-react/scope: '@deffector/agent/react-scope'
 <DeffectorProvider value={scope} name="client">
   <App />
 </DeffectorProvider>;

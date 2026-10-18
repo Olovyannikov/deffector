@@ -1,6 +1,13 @@
 import { encode, isLossless, maskByKey, maskString, type Encoded } from '@deffector/protocol';
 
-const TRACE_ENCODING = { maxDepth: 8, maxKeys: 200, maxItems: 500, maxString: 20000 };
+// traces replay values, so they keep far more than the panel's previews
+const TRACE_ENCODING = {
+  maxDepth: 8,
+  maxKeys: 200,
+  maxItems: 500,
+  maxString: 20000,
+  maxNodes: 200_000,
+};
 
 /** `$password`, `token`, `apiKey`…: a string store or event with such a name is masked as a whole. */
 function isSensitiveName(name: string) {

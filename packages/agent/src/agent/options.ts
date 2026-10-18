@@ -1,4 +1,5 @@
-export const AGENT_VERSION = '0.1.0';
+/** keep in sync with package.json (a test checks it) */
+export const AGENT_VERSION = '0.1.3';
 
 export const DEFAULT_MAX_TRANSACTIONS = 1000;
 

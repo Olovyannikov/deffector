@@ -16,6 +16,17 @@ const CONTENT_TYPES = {
 };
 /** Traces and big state snapshots travel as one message. */
 const MAX_MESSAGE_BYTES = 64 * 1024 * 1024;
+
+/** Why a socket closed, when it was not a normal close (page reload, process exit). */
+function describeCloseCode(code) {
+  if (code === 1009) {
+    return ` — a message was larger than ${MAX_MESSAGE_BYTES / 1024 / 1024} MB; please report this at https://github.com/mxmvshnvsk/deffector/issues`;
+  }
+  // a normal close, a page reload or a tab that went away
+  if ([1000, 1001, 1005, 1006].includes(code)) return '';
+  return ` (code ${code})`;
+}
+
 /** A panel that has not picked an agent follows the most recently connected one. */
 const AUTO = 'auto';
 
@@ -128,9 +139,10 @@ function createRelay(log) {
       for (const panel of agent.panels)
         if (panel.ws.readyState === WebSocket.OPEN) panel.ws.send(text);
     });
-    ws.on('close', () => {
+    ws.on('close', (code) => {
       agents.delete(id);
-      log(`[deffector] agent disconnected: ${agent.hello?.app?.name ?? id}`);
+      const name = agent.hello?.app?.name ?? id;
+      log(`[deffector] agent disconnected: ${name}${describeCloseCode(code)}`);
       for (const panel of agent.panels) {
         panel.agentId = null;
         pair(panel);

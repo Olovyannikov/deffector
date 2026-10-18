@@ -20,6 +20,13 @@ package, a monorepo), deffector sees only one of them. With Vite, dedupe them:
 `resolve: { dedupe: ['effector', 'effector-react'] }`.
 :::
 
+::: tip Parcel
+Parcel 2 ignores the `exports` field of packages by default, so `@deffector/agent/node` and the
+adapters are not found. Turn it on in `package.json`:
+`"@parcel/resolver-default": { "packageExports": true }`. With it, `parcel build` also picks the
+agent's production no-op; run the dev server (`parcel src/index.html`) to debug.
+:::
+
 ## React
 
 ```tsx
@@ -39,7 +46,17 @@ createRoot(document.getElementById('root')!).render(
 ```
 
 `DeffectorProvider` takes the same `value` as effector-react’s `Provider`, plus an optional `name`.
-Inside, components use `useUnit` as usual.
+Inside, components use `useUnit` as usual. React 16.8 and newer work; with React 16 and 17 render
+with `ReactDOM.render` as before.
+
+If the components take their hooks from `effector-react/scope` (common with effector-react 22), import
+the provider from `@deffector/agent/react-scope`: that entry has its own context, and a provider from
+`effector-react` would leave the hooks without a scope.
+
+```tsx
+import { useStore } from 'effector-react/scope';
+import { DeffectorProvider } from '@deffector/agent/react-scope';
+```
 
 ## Vue
 

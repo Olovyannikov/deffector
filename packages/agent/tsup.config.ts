@@ -21,6 +21,8 @@ export default defineConfig([
       'node-noop': 'src/node-noop.ts',
       react: 'src/adapters/react.tsx',
       'react-noop': 'src/adapters/react-noop.tsx',
+      'react-scope': 'src/adapters/react-scope.ts',
+      'react-scope-noop': 'src/adapters/react-scope-noop.ts',
       vue: 'src/adapters/vue.ts',
       'vue-noop': 'src/adapters/vue-noop.ts',
     },
@@ -32,7 +34,6 @@ export default defineConfig([
     tsconfig: 'tsconfig.build.json',
     dts: { resolve: ['@deffector/protocol'] },
     noExternal: ['@deffector/protocol'],
-    // JSX: the automatic runtime, from tsconfig ("jsx": "react-jsx")
     external,
   },
   {

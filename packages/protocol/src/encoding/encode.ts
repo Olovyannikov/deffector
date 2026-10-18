@@ -7,13 +7,24 @@ export interface EncodeOptions {
   maxKeys?: number;
   maxItems?: number;
   maxString?: number;
+  /**
+   * Values encoded in total. The per-level limits alone multiply (80 keys × 80 items × …):
+   * past this budget the rest of the value is summarised, so one payload stays small.
+   */
+  maxNodes?: number;
   /** Returns true for object keys whose values must be masked (passwords, tokens). */
   mask?: (key: string, path: string) => boolean;
   /** Collects paths that were masked. */
   masked?: string[];
 }
 
-const DEFAULT_LIMITS = { maxDepth: 8, maxKeys: 100, maxItems: 100, maxString: 2000 };
+const DEFAULT_LIMITS = {
+  maxDepth: 8,
+  maxKeys: 100,
+  maxItems: 100,
+  maxString: 2000,
+  maxNodes: 2000,
+};
 
 /** Lines of an error stack kept: enough to find the throwing code, small enough to send. */
 const STACK_LINES = 6;
@@ -113,11 +124,20 @@ class Encoder {
 
   private readonly options: EncodeOptions & typeof DEFAULT_LIMITS;
 
+  /** values that may still be encoded in full (`maxNodes`) */
+  private budget: number;
+
   constructor(options: EncodeOptions & typeof DEFAULT_LIMITS) {
     this.options = options;
+    this.budget = options.maxNodes;
+  }
+
+  private get exhausted(): boolean {
+    return this.budget <= 0;
   }
 
   value(value: unknown, depth: number, path: string): Encoded {
+    this.budget -= 1;
     if (value === null) return null;
     if (typeof value === 'object') return this.object(value, depth, path);
     return encodeScalar(value, this.options.maxString);
@@ -127,7 +147,7 @@ class Encoder {
     if (this.seen.has(object)) return tagged('cycle');
     const opaque = encodeOpaqueObject(object);
     if (opaque !== undefined) return opaque;
-    if (depth >= this.options.maxDepth) return describeTooDeep(object);
+    if (depth >= this.options.maxDepth || this.exhausted) return describeTooDeep(object);
     // only the current branch is tracked: an object met twice side by side is not a cycle
     this.seen.add(object);
     try {
@@ -143,15 +163,17 @@ class Encoder {
   private array(array: unknown[], depth: number, path: string): Encoded {
     const items: Encoded[] = [];
     const count = Math.min(array.length, this.options.maxItems);
-    for (let i = 0; i < count; i++) items.push(this.value(array[i], depth + 1, `${path}[${i}]`));
-    if (array.length > count) items.push(tagged('more', { n: array.length - count }));
+    for (let i = 0; i < count && !this.exhausted; i++) {
+      items.push(this.value(array[i], depth + 1, `${path}[${i}]`));
+    }
+    if (array.length > items.length) items.push(tagged('more', { n: array.length - items.length }));
     return items;
   }
 
   private map(map: Map<unknown, unknown>, depth: number, path: string): Encoded {
     const entries: [Encoded, Encoded][] = [];
     for (const [key, entryValue] of map) {
-      if (entries.length >= this.options.maxItems) break;
+      if (entries.length >= this.options.maxItems || this.exhausted) break;
       entries.push([
         this.value(key, depth + 1, `${path}.<key>`),
         this.value(entryValue, depth + 1, `${path}.${String(key)}`),
@@ -163,7 +185,7 @@ class Encoder {
   private set(set: Set<unknown>, depth: number, path: string): Encoded {
     const values: Encoded[] = [];
     for (const item of set) {
-      if (values.length >= this.options.maxItems) break;
+      if (values.length >= this.options.maxItems || this.exhausted) break;
       values.push(this.value(item, depth + 1, `${path}[]`));
     }
     return tagged('set', { values, size: set.size });
@@ -173,11 +195,14 @@ class Encoder {
     const fields: EncodedRecord = {};
     const keys = Object.keys(object);
     const count = Math.min(keys.length, this.options.maxKeys);
-    for (let i = 0; i < count; i++) {
-      const key = keys[i];
+    let encodedCount = 0;
+    for (; encodedCount < count && !this.exhausted; encodedCount++) {
+      const key = keys[encodedCount];
       fields[key] = this.field(object, key, depth, path ? `${path}.${key}` : key);
     }
-    if (keys.length > count) fields['…'] = tagged('more', { n: keys.length - count });
+    if (keys.length > encodedCount) {
+      fields['…'] = tagged('more', { n: keys.length - encodedCount });
+    }
     const className = describeClassName(object);
     if (className) return tagged('inst', { cls: className, v: fields });
     if ('$t' in fields) return tagged('obj', { v: fields });

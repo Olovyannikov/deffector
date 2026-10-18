@@ -17,6 +17,11 @@ import { errorMessage } from '../utils';
 /** one huge message can exceed the extension messaging limit: big lists go in chunks */
 const UNITS_PER_MESSAGE = 2000;
 const TRANSACTIONS_PER_MESSAGE = 200;
+/**
+ * …and by size: payloads can be large (forest passes element drafts), and the
+ * standalone app refuses messages over 64 MB. JSON length is close to bytes.
+ */
+const TRANSACTION_CHARS_PER_MESSAGE = 4 * 1024 * 1024;
 
 /** transactions waiting for the panel; older ones are dropped */
 const MAX_UNSENT_TRANSACTIONS = 2000;
@@ -48,6 +53,29 @@ function chunks<T>(items: T[], size: number): T[][] {
     result.push(items.slice(start, start + size));
   }
   return result;
+}
+
+/** Transactions split into messages, each within the count and size limits. */
+export function transactionBatches(
+  txs: Tx[],
+  maxCount = TRANSACTIONS_PER_MESSAGE,
+  maxChars = TRANSACTION_CHARS_PER_MESSAGE,
+): Tx[][] {
+  const batches: Tx[][] = [];
+  let batch: Tx[] = [];
+  let batchChars = 0;
+  for (const tx of txs) {
+    const chars = JSON.stringify(tx).length;
+    if (batch.length && (batch.length >= maxCount || batchChars + chars > maxChars)) {
+      batches.push(batch);
+      batch = [];
+      batchChars = 0;
+    }
+    batch.push(tx);
+    batchChars += chars;
+  }
+  if (batch.length) batches.push(batch);
+  return batches;
 }
 
 /**
@@ -123,6 +151,11 @@ export class PanelConnection {
     this.flushTimer = setTimeout(this.flush, FLUSH_DELAY_MS);
   }
 
+  private sendTransactions(transactions: RawTransaction[]) {
+    const txs = transactions.map((transaction) => this.parts.encode(transaction));
+    for (const batch of transactionBatches(txs)) this.send({ type: 'txs', txs: batch });
+  }
+
   private sendUnits(units: UnitInfo[]) {
     for (const chunk of chunks(units, UNITS_PER_MESSAGE))
       this.send({ type: 'units', units: chunk });
@@ -145,9 +178,9 @@ export class PanelConnection {
       this.sendTimeline();
     }
     if (this.unsentTransactions.length) {
-      const txs = this.unsentTransactions.map((transaction) => this.parts.encode(transaction));
+      const transactions = this.unsentTransactions;
       this.unsentTransactions = [];
-      this.send({ type: 'txs', txs });
+      this.sendTransactions(transactions);
     }
     if (diagnostics.hasUnsentChanges) {
       diagnostics.hasUnsentChanges = false;
@@ -167,9 +200,7 @@ export class PanelConnection {
     this.sendUnits(units);
     scopes.hasUnsentChanges = false;
     this.send({ type: 'scopes', scopes: scopes.list() });
-    const txs = history.transactions.map((transaction) => this.parts.encode(transaction));
-    for (const chunk of chunks(txs, TRANSACTIONS_PER_MESSAGE))
-      this.send({ type: 'txs', txs: chunk });
+    this.sendTransactions(history.transactions);
     this.parts.refreshStaticDiagnostics();
     diagnostics.hasUnsentChanges = false;
     this.send({ type: 'diagnostics', items: diagnostics.list() });

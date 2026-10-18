@@ -20,6 +20,13 @@
 `resolve: { dedupe: ['effector', 'effector-react'] }`.
 :::
 
+::: tip Parcel
+Parcel 2 по умолчанию не читает поле `exports` у пакетов, поэтому `@deffector/agent/node` и адаптеры
+не находятся. Включите его в `package.json`:
+`"@parcel/resolver-default": { "packageExports": true }`. После этого `parcel build` берёт
+пустышку агента для продакшена, так что для отладки запускайте dev-сервер (`parcel src/index.html`).
+:::
+
 ## React
 
 ```tsx
@@ -39,7 +46,17 @@ createRoot(document.getElementById('root')!).render(
 ```
 
 `DeffectorProvider` принимает тот же `value`, что и `Provider` из effector-react, плюс необязательный
-`name`. Внутри компоненты, как обычно, используют `useUnit`.
+`name`. Внутри компоненты, как обычно, используют `useUnit`. Работает React 16.8 и новее; на React 16 и
+17 рендерите через `ReactDOM.render`, как и раньше.
+
+Если компоненты берут хуки из `effector-react/scope` (так часто пишут на effector-react 22), импортируйте
+провайдер из `@deffector/agent/react-scope`: у этой точки входа свой контекст, и провайдер из
+`effector-react` оставил бы хуки без scope.
+
+```tsx
+import { useStore } from 'effector-react/scope';
+import { DeffectorProvider } from '@deffector/agent/react-scope';
+```
 
 ## Vue
 

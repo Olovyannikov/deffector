@@ -1,6 +1,6 @@
 {
   "name": "@deffector/agent",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "DevTools for effector: every user action as one transaction, time travel, state injection, effect overrides and replayable traces. The agent that runs in your app.",
   "keywords": [
     "effector",
@@ -42,6 +42,12 @@
       "@deffector/source": "./src/adapters/react.tsx",
       "default": "./dist/react.js"
     },
+    "./react-scope": {
+      "types": "./dist/react-scope.d.ts",
+      "production": "./dist/react-scope-noop.js",
+      "@deffector/source": "./src/adapters/react-scope.ts",
+      "default": "./dist/react-scope.js"
+    },
     "./vue": {
       "types": "./dist/vue.d.ts",
       "production": "./dist/vue-noop.js",
@@ -74,10 +80,10 @@
   },
   "peerDependencies": {
     "effector": ">=22.6.0",
-    "effector-react": ">=23",
+    "effector-react": ">=22",
     "effector-solid": ">=0.23",
     "effector-vue": ">=23",
-    "react": ">=18",
+    "react": ">=16.8",
     "solid-js": ">=1.8",
     "vue": ">=3.3"
   },

@@ -3,8 +3,8 @@ import type { RawStep, RawTransaction } from '../history';
 import type { Texts } from '../i18n';
 
 /** step values are previews: the panel asks for full state separately */
-const STEP_ENCODING = { maxDepth: 3, maxKeys: 12, maxItems: 12, maxString: 160 };
-const FULL_ENCODING = { maxDepth: 6, maxKeys: 80, maxItems: 80, maxString: 2000 };
+const STEP_ENCODING = { maxDepth: 3, maxKeys: 12, maxItems: 12, maxString: 160, maxNodes: 60 };
+const FULL_ENCODING = { maxDepth: 6, maxKeys: 80, maxItems: 80, maxString: 2000, maxNodes: 1500 };
 
 function noteText(note: string | undefined, texts: Texts): string | undefined {
   switch (note) {

@@ -1,33 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react';
 import { Provider } from 'effector-react';
-import type { Scope } from 'effector';
-import { registerScope } from '..';
+import { createDeffectorProvider } from './reactProvider';
 
-interface DeffectorProviderProps {
-  value: Scope;
-  name?: string;
-  children?: ReactNode;
-}
+export type { DeffectorProviderProps } from './reactTypes';
 
-/**
- * Drop-in replacement for effector-react's Provider.
- * deffector can render the app with another scope through it: a forked copy
- * of the past for time travel, or a fresh scope for replaying a trace.
- */
-export function DeffectorProvider({
-  value,
-  name = undefined,
-  children = null,
-}: DeffectorProviderProps) {
-  const [scope, setScope] = useState<Scope>(value);
-  // a new scope from the app replaces whatever deffector rendered
-  const [appScope, setAppScope] = useState<Scope>(value);
-  if (appScope !== value) {
-    setAppScope(value);
-    setScope(value);
-  }
-  useEffect(() => registerScope(value, { name, switcher: setScope }), [value, name]);
-  return <Provider value={scope}>{children}</Provider>;
-}
+/** Drop-in replacement for effector-react's Provider (see reactProvider.ts). */
+export const DeffectorProvider = createDeffectorProvider(Provider);
 
 export default DeffectorProvider;
