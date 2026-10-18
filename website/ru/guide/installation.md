@@ -45,13 +45,12 @@ peer-зависимости: ставьте только те, что испол
 [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn). Edge ставит его оттуда же
 (разрешите расширения из других магазинов, когда Edge спросит).
 
-**Firefox 140+:** скачайте `deffector-firefox-<версия>.xpi` из
-[GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases), затем откройте `about:addons` → ⚙ → **Установить дополнение из файла…** (или
-перетащите файл в окно Firefox). Файл подписан Mozilla, поэтому дополнение остаётся после перезапуска;
-чтобы обновить его, установите новый файл тем же способом.
+**Firefox 140+:** установите deffector из
+[каталога дополнений Firefox](https://addons.mozilla.org/ru/firefox/addon/deffector/).
 
-**Chrome или Edge без магазина:** в тех же релизах лежит `deffector-chrome-<версия>.zip`. Распакуйте его
-и загрузите папку, как описано ниже (**Загрузить распакованное**).
+**Без магазинов:** в каждом релизе расширения на [GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases) есть
+`deffector-chrome-<версия>.zip` для Chrome и Edge: распакуйте его и загрузите папку, как описано ниже
+(**Загрузить распакованное**).
 
 **Самый свежий код из репозитория:** соберите расширение из исходников и загрузите как распакованное.
 

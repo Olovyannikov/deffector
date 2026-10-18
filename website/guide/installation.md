@@ -43,13 +43,12 @@ Then follow the [Quick start](/guide/quick-start).
 [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn). Edge installs it from there too
 (allow extensions from other stores when Edge asks).
 
-**Firefox 140+:** download `deffector-firefox-<version>.xpi` from
-[GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases), then open `about:addons` → ⚙ → **Install Add-on From File…** (or drag the
-file onto a Firefox window). The file is signed by Mozilla, so the add-on stays after a restart; to
-update it, install the newer file the same way.
+**Firefox 140+:** install deffector from
+[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/deffector/).
 
-**Chrome or Edge without the store:** the same releases have `deffector-chrome-<version>.zip`. Unzip it
-and load the folder as described below (**Load unpacked**).
+**Without the stores:** every extension release on [GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases) has
+`deffector-chrome-<version>.zip` for Chrome and Edge: unzip it and load the folder as described below
+(**Load unpacked**).
 
 **The latest code from the repository:** build it from source and load it unpacked.
 

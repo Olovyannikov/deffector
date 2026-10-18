@@ -16,6 +16,9 @@ hero:
       text: Установить в Chrome
       link: https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn
     - theme: alt
+      text: Установить в Firefox
+      link: https://addons.mozilla.org/ru/firefox/addon/deffector/
+    - theme: alt
       text: Что такое deffector?
       link: /ru/guide/introduction
     - theme: alt

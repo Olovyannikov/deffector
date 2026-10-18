@@ -16,6 +16,9 @@ hero:
       text: Add to Chrome
       link: https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn
     - theme: alt
+      text: Add to Firefox
+      link: https://addons.mozilla.org/firefox/addon/deffector/
+    - theme: alt
       text: What is deffector?
       link: /guide/introduction
     - theme: alt

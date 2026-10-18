@@ -36,7 +36,7 @@ Details: [Installation → Requirements](https://mxmvshnvsk.github.io/deffector/
 npm install @deffector/agent
 ```
 
-Install the browser extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn) (Chrome and Edge) or download it from [GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases): a signed `.xpi` for Firefox, a `.zip` for Chrome and Edge without the store, then:
+Install the browser extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn) (Chrome and Edge) or [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/deffector/); without the stores, download the `.zip` for Chrome and Edge from [GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases), then:
 
 ```ts
 // the very first import of your app
