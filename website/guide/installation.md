@@ -43,7 +43,15 @@ Then follow the [Quick start](/guide/quick-start).
 [Chrome Web Store](https://chromewebstore.google.com/detail/cnnimkkficcbbkaohlafpnbgpkhpkfjn). Edge installs it from there too
 (allow extensions from other stores when Edge asks).
 
-**Firefox,** or the latest code from the repository: build it from source and load it unpacked.
+**Firefox 140+:** download `deffector-firefox-<version>.xpi` from
+[GitHub Releases](https://github.com/mxmvshnvsk/deffector/releases), then open `about:addons` → ⚙ → **Install Add-on From File…** (or drag the
+file onto a Firefox window). The file is signed by Mozilla, so the add-on stays after a restart; to
+update it, install the newer file the same way.
+
+**Chrome or Edge without the store:** the same releases have `deffector-chrome-<version>.zip`. Unzip it
+and load the folder as described below (**Load unpacked**).
+
+**The latest code from the repository:** build it from source and load it unpacked.
 
 ```sh
 git clone https://github.com/mxmvshnvsk/deffector.git
@@ -61,15 +69,15 @@ The build writes two folders:
 
 1. Open `chrome://extensions`.
 2. Turn on **Developer mode** (top right).
-3. Click **Load unpacked** and select `packages/extension/dist`.
+3. Click **Load unpacked** and select `packages/extension/dist` (or the folder unzipped from a release).
 
 ### Edge
 
 1. Open `edge://extensions`.
 2. Turn on **Developer mode**.
-3. Click **Load unpacked** and select `packages/extension/dist`.
+3. Click **Load unpacked** and select `packages/extension/dist` (or the folder unzipped from a release).
 
-### Firefox
+### Firefox from source
 
 1. Open `about:debugging`.
 2. Choose **This Firefox**.

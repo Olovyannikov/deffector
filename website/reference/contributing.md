@@ -95,3 +95,19 @@ The workflow uses npm Trusted Publishing, so the repository needs no npm token: 
 package → Settings → Trusted publishing → GitHub Actions → `mxmvshnvsk` / `deffector` / `release.yml`.
 The first version of a package is published by hand (`npm publish -w @deffector/agent -w @deffector/standalone`),
 because Trusted publishing is configured on an existing package.
+
+### The browser extension
+
+The extension has its own version (`packages/extension/static/manifest.json`) and its own tag. Bump the
+manifest version, commit, then tag and push:
+
+```sh
+git tag extension-v0.1.2 && git push origin extension-v0.1.2
+```
+
+`.github/workflows/extension-release.yml` builds it, signs the Firefox build on addons.mozilla.org as
+unlisted (the repository secrets `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`, from the AMO API keys page) and
+creates a GitHub release with `deffector-chrome-<version>.zip` and `deffector-firefox-<version>.xpi`. AMO
+signs every version once, so each extension release needs a new version. The same zip is what you
+upload to the Chrome Web Store. To build an existing tag again, run the workflow by hand
+(**Actions** → **extension release** → **Run workflow**) with that tag.

@@ -97,3 +97,20 @@ Workflow использует npm Trusted Publishing, поэтому npm-ток�
 каждого пакета → Settings → Trusted publishing → GitHub Actions → `mxmvshnvsk` / `deffector` /
 `release.yml`. Первую версию пакета публикуют вручную (`npm publish -w @deffector/agent -w @deffector/standalone`),
 потому что Trusted publishing настраивается у уже существующего пакета.
+
+### Расширение для браузера
+
+У расширения своя версия (`packages/extension/static/manifest.json`) и свой тег. Поднимите версию в
+манифесте, закоммитьте, затем создайте и отправьте тег:
+
+```sh
+git tag extension-v0.1.2 && git push origin extension-v0.1.2
+```
+
+`.github/workflows/extension-release.yml` собирает расширение, подписывает сборку для Firefox на
+addons.mozilla.org как unlisted (секреты репозитория `AMO_JWT_ISSUER` и `AMO_JWT_SECRET` со страницы
+API-ключей AMO) и создаёт релиз на GitHub с `deffector-chrome-<версия>.zip` и
+`deffector-firefox-<версия>.xpi`. AMO подписывает каждую версию один раз, поэтому каждому релизу
+расширения нужна новая версия. Этот же zip загружается в Chrome Web Store. Чтобы собрать существующий
+тег заново, запустите workflow вручную (**Actions** → **extension release** → **Run workflow**) с этим
+тегом.
