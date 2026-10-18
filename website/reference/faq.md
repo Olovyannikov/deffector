@@ -102,6 +102,6 @@ Yes. In production builds every entry point resolves to a no-op with the same AP
 
 ## Which versions are supported?
 
-effector 22.6 or newer (developed against 23.4.4, also checked on 22.8.6); React 16.8+, Vue 3.3+,
-Solid 1.8+; Chrome and Edge 116+, Firefox 140+. The full table, with Node, TypeScript and bundlers, is in
+effector 22.6 or newer (developed against 23.4.4, also checked on 22.8.6); React 16.8+, Vue 3.0+,
+Solid 1.3+; Chrome and Edge 116+, Firefox 140+. The full table, with Node, TypeScript and bundlers, is in
 [Installation → Requirements](/guide/installation#requirements).

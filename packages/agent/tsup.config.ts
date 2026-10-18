@@ -39,7 +39,12 @@ export default defineConfig([
   {
     // Solid ships as source (the `solid` export condition, compiled by vite-plugin-solid or
     // babel-preset-solid in the app); only its declarations are built here
-    entry: { solid: 'src/adapters/solid.tsx', 'solid-noop': 'src/adapters/solid-noop.tsx' },
+    entry: {
+      solid: 'src/adapters/solid.tsx',
+      'solid-noop': 'src/adapters/solid-noop.tsx',
+      'solid-scope': 'src/adapters/solid-scope.tsx',
+      'solid-scope-noop': 'src/adapters/solid-scope-noop.tsx',
+    },
     format: ['esm'],
     tsconfig: 'tsconfig.solid-build.json',
     dts: { only: true },

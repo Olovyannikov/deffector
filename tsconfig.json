@@ -20,8 +20,8 @@
   "exclude": [
     "**/node_modules",
     "**/dist",
-    "packages/agent/src/adapters/solid.tsx",
-    "packages/agent/src/adapters/solid-noop.tsx",
+    "packages/agent/src/adapters/solid*.tsx",
+    "packages/agent/src/adapters/solidTypes.ts",
     "demo/solid-vite/vite.config.ts"
   ]
 }

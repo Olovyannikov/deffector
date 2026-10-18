@@ -5,22 +5,23 @@ extension or the standalone app.
 
 ## Requirements
 
-| What                       | Minimum                                                                                                                                                | Tested with                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| effector                   | 22.6                                                                                                                                                   | 23.4.4, 22.8.6                                           |
-| React                      | React 16.8 with effector-react 22                                                                                                                      | React 16.8, 16.14, 17.0, 19.3; effector-react 22.5, 23.3 |
-| Vue                        | Vue 3.3 with effector-vue 23                                                                                                                           | Vue 3.5, effector-vue 23.2                               |
-| Solid                      | solid-js 1.8 with effector-solid 0.23                                                                                                                  | solid-js 1.9, effector-solid 0.23                        |
-| Next.js                    | 13.4 (App Router, `@effector/next`)                                                                                                                    | 15.5                                                     |
-| Browser with the extension | Chrome or Edge 116, Firefox 140 (Firefox for Android 142)                                                                                              | latest Chrome                                            |
-| Standalone app             | Node 18                                                                                                                                                | Node 22                                                  |
-| Agent in a Node process    | Node 22 (global `WebSocket`); older: pass `WebSocket` from `ws`                                                                                        | Node 22                                                  |
-| React Native               | any version (it has a global `WebSocket`)                                                                                                              | —                                                        |
-| TypeScript                 | 5.0 with `moduleResolution` `"bundler"`, `"node16"` or `"nodenext"`                                                                                    | 5.9                                                      |
-| Bundler                    | one that reads the `exports` field: Vite, webpack 5, Next.js, esbuild, Rollup; Parcel 2 with `packageExports` (see [Parcel](/guide/frameworks#parcel)) | Vite 7, Next.js 15, Parcel 2.9                           |
-| Building from source       | Node 22                                                                                                                                                | Node 22                                                  |
+| What                       | Minimum                                                                                                                                                | Tested with                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| effector                   | 22.6                                                                                                                                                   | 23.4.4, 22.8.6                                              |
+| React                      | React 16.8 with effector-react 22                                                                                                                      | React 16.8, 16.14, 17.0, 19.3; effector-react 22.5, 23.3    |
+| Vue                        | Vue 3.0 with effector-vue 22                                                                                                                           | Vue 3.0, 3.2, 3.3, 3.5; effector-vue 22.2, 23.0, 23.2       |
+| Solid                      | solid-js 1.3 with effector-solid 0.22                                                                                                                  | solid-js 1.3, 1.4, 1.5, 1.6, 1.9; effector-solid 0.22, 0.23 |
+| Next.js                    | 13.4 (App Router, `@effector/next`)                                                                                                                    | 15.5                                                        |
+| Browser with the extension | Chrome or Edge 116, Firefox 140 (Firefox for Android 142)                                                                                              | latest Chrome                                               |
+| Standalone app             | Node 18                                                                                                                                                | Node 22                                                     |
+| Agent in a Node process    | Node 22 (global `WebSocket`); older: pass `WebSocket` from `ws`                                                                                        | Node 22                                                     |
+| React Native               | any version (it has a global `WebSocket`)                                                                                                              | —                                                           |
+| TypeScript                 | 5.0 with `moduleResolution` `"bundler"`, `"node16"` or `"nodenext"`                                                                                    | 5.9                                                         |
+| Bundler                    | one that reads the `exports` field: Vite, webpack 5, Next.js, esbuild, Rollup; Parcel 2 with `packageExports` (see [Parcel](/guide/frameworks#parcel)) | Vite 7, Next.js 15, Parcel 2.9                              |
+| Building from source       | Node 22                                                                                                                                                | Node 22                                                     |
 
-The framework adapters are optional: plain effector needs only `effector`. The babel/swc plugin is
+The framework adapters are optional: plain effector needs only `effector`. Vue 2 has no adapter
+(effector-vue supports scopes only on Vue 3), but its apps work in [global mode](/guide/frameworks#global-mode-without-fork). The babel/swc plugin is
 optional too; without it the panel shows less — see
 [Without the babel/swc plugin](/guide/frameworks#without-the-babel-swc-plugin).
 

@@ -84,6 +84,11 @@ createApp(withDeffector(App, { scope, name: 'client' })).mount('#app');
 воспроизведение) поддерево внутри `DeffectorScope` монтируется заново. Локальное состояние компонентов
 в нём сбрасывается.
 
+`withDeffector` заменяет `EffectorScopePlugin` (effector-vue 23) и `VueSSRPlugin` (effector-vue 22): он
+передаёт scope тем же способом, поэтому его видят `useUnit`, `useStore` и `useEvent` обеих версий.
+Работает Vue 3.0 и новее. Во Vue 2 effector-vue не поддерживает scope — такие приложения запускайте в
+[глобальном режиме](#глобальныи-режим-без-fork).
+
 ## Solid
 
 ```tsx
@@ -106,7 +111,10 @@ render(
 ```
 
 Как и во Vue, примитивы effector-solid читают scope при создании компонента, поэтому при подмене scope
-поддерево создаётся заново.
+поддерево создаётся заново. Работает solid-js 1.3 и новее.
+
+Если компоненты берут `useUnit` из `effector-solid/scope`, импортируйте провайдер из
+`@deffector/agent/solid-scope`: у этой точки входа свой контекст.
 
 ## Next.js App Router
 

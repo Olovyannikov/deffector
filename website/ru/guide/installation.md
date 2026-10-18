@@ -5,22 +5,24 @@ deffector состоит из двух половин: **агента** — па
 
 ## Требования
 
-| Что                   | Минимум                                                                                                                                     | Проверено на                                             |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| effector              | 22.6                                                                                                                                        | 23.4.4, 22.8.6                                           |
-| React                 | React 16.8 и effector-react 22                                                                                                              | React 16.8, 16.14, 17.0, 19.3; effector-react 22.5, 23.3 |
-| Vue                   | Vue 3.3 и effector-vue 23                                                                                                                   | Vue 3.5, effector-vue 23.2                               |
-| Solid                 | solid-js 1.8 и effector-solid 0.23                                                                                                          | solid-js 1.9, effector-solid 0.23                        |
-| Next.js               | 13.4 (App Router, `@effector/next`)                                                                                                         | 15.5                                                     |
-| Браузер с расширением | Chrome или Edge 116, Firefox 140 (Firefox для Android 142)                                                                                  | свежий Chrome                                            |
-| Отдельное приложение  | Node 18                                                                                                                                     | Node 22                                                  |
-| Агент в Node-процессе | Node 22 (глобальный `WebSocket`); на старых — передайте `WebSocket` из `ws`                                                                 | Node 22                                                  |
-| React Native          | любая версия (в нём есть глобальный `WebSocket`)                                                                                            | —                                                        |
-| TypeScript            | 5.0 с `moduleResolution` `"bundler"`, `"node16"` или `"nodenext"`                                                                           | 5.9                                                      |
-| Сборщик               | читающий поле `exports`: Vite, webpack 5, Next.js, esbuild, Rollup; Parcel 2 с `packageExports` (см. [Parcel](/ru/guide/frameworks#parcel)) | Vite 7, Next.js 15, Parcel 2.9                           |
-| Сборка из исходников  | Node 22                                                                                                                                     | Node 22                                                  |
+| Что                   | Минимум                                                                                                                                     | Проверено на                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| effector              | 22.6                                                                                                                                        | 23.4.4, 22.8.6                                              |
+| React                 | React 16.8 и effector-react 22                                                                                                              | React 16.8, 16.14, 17.0, 19.3; effector-react 22.5, 23.3    |
+| Vue                   | Vue 3.0 и effector-vue 22                                                                                                                   | Vue 3.0, 3.2, 3.3, 3.5; effector-vue 22.2, 23.0, 23.2       |
+| Solid                 | solid-js 1.3 и effector-solid 0.22                                                                                                          | solid-js 1.3, 1.4, 1.5, 1.6, 1.9; effector-solid 0.22, 0.23 |
+| Next.js               | 13.4 (App Router, `@effector/next`)                                                                                                         | 15.5                                                        |
+| Браузер с расширением | Chrome или Edge 116, Firefox 140 (Firefox для Android 142)                                                                                  | свежий Chrome                                               |
+| Отдельное приложение  | Node 18                                                                                                                                     | Node 22                                                     |
+| Агент в Node-процессе | Node 22 (глобальный `WebSocket`); на старых — передайте `WebSocket` из `ws`                                                                 | Node 22                                                     |
+| React Native          | любая версия (в нём есть глобальный `WebSocket`)                                                                                            | —                                                           |
+| TypeScript            | 5.0 с `moduleResolution` `"bundler"`, `"node16"` или `"nodenext"`                                                                           | 5.9                                                         |
+| Сборщик               | читающий поле `exports`: Vite, webpack 5, Next.js, esbuild, Rollup; Parcel 2 с `packageExports` (см. [Parcel](/ru/guide/frameworks#parcel)) | Vite 7, Next.js 15, Parcel 2.9                              |
+| Сборка из исходников  | Node 22                                                                                                                                     | Node 22                                                     |
 
-Адаптеры для фреймворков необязательны: чистому effector нужен только `effector`. Babel/swc-плагин тоже
+Адаптеры для фреймворков необязательны: чистому effector нужен только `effector`. Для Vue 2 адаптера
+нет (effector-vue поддерживает scope только во Vue 3), но такие приложения работают в
+[глобальном режиме](/ru/guide/frameworks#глобальныи-режим-без-fork). Babel/swc-плагин тоже
 необязателен; без него панель показывает меньше — см.
 [Без babel/swc-плагина](/ru/guide/frameworks#без-babel-swc-плагина).
 

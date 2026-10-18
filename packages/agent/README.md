@@ -11,7 +11,7 @@ npm install @deffector/agent
 ## Requirements
 
 - **effector** 22.6+ (tested with 23.4.4 and 22.8.6)
-- **React** 16.8+ with effector-react 22+, **Vue** 3.3+ with effector-vue 23+, **Solid** 1.8+ with effector-solid 0.23+ — only for the framework you use
+- **React** 16.8+ with effector-react 22+, **Vue** 3.0+ with effector-vue 22+, **Solid** 1.3+ with effector-solid 0.22+ — only for the framework you use
 - **Next.js** 13.4+ (App Router, `@effector/next`), tested with 15.5
 - **Browser** with the extension: Chrome or Edge 116+, Firefox 140+
 - **Node** 18+ for the standalone app; 22+ for the agent in a Node process (older: pass `WebSocket` from `ws`)
@@ -43,7 +43,7 @@ import { withDeffector } from '@deffector/agent/vue';
 createApp(withDeffector(App, { scope, name: 'client' })).mount('#app');
 
 // Solid (compiled by vite-plugin-solid or babel-preset-solid)
-import { DeffectorProvider } from '@deffector/agent/solid';
+import { DeffectorProvider } from '@deffector/agent/solid'; // primitives from effector-solid/scope: '@deffector/agent/solid-scope'
 <DeffectorProvider value={scope} name="client">
   <App />
 </DeffectorProvider>;

@@ -6,5 +6,5 @@
     "types": [],
     "noEmit": false
   },
-  "include": ["src/adapters/solid.tsx", "src/adapters/solid-noop.tsx"]
+  "include": ["src/adapters/solid*.tsx", "src/adapters/solidTypes.ts"]
 }

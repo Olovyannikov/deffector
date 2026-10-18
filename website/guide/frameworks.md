@@ -83,6 +83,11 @@ The component form works too:
 effector-vue composables read the scope once, in `setup`, so on a scope swap (a jump, a replay) the
 subtree under `DeffectorScope` is re-mounted. Local component state inside it is reset.
 
+`withDeffector` replaces `EffectorScopePlugin` (effector-vue 23) and `VueSSRPlugin` (effector-vue 22):
+it provides the scope the same way, so `useUnit`, `useStore` and `useEvent` from either version read
+it. Vue 3.0 and newer work. Vue 2 apps have no scope support in effector-vue; run them in
+[global mode](#global-mode-without-fork).
+
 ## Solid
 
 ```tsx
@@ -105,7 +110,10 @@ render(
 ```
 
 As in Vue, effector-solid primitives read the scope when a component is created, so the subtree is
-re-created on a scope swap.
+re-created on a scope swap. solid-js 1.3 and newer work.
+
+If the components take `useUnit` from `effector-solid/scope`, import the provider from
+`@deffector/agent/solid-scope`: that entry has its own context.
 
 ## Next.js App Router
 
